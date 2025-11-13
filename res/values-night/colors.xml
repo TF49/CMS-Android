@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material Design 3 夜间主题颜色方案 -->
+    <color name="primary">#D0BCFF</color>
+    <color name="primary_dark">#B8A2FF</color>
+    <color name="primary_color">#D0BCFF</color>
+    <color name="secondary">#CCC2DC</color>
+    <color name="secondary_dark">#B8A2FF</color>
+    <color name="tertiary">#EFB8C8</color>
+    <color name="tertiary_dark">#DBA4B4</color>
+    
+    <!-- 功能颜色 -->
+    <color name="success">#66BB6A</color>
+    <color name="success_dark">#4CAF50</color>
+    <color name="warning">#FFB74D</color>
+    <color name="warning_dark">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="error_dark">#E53935</color>
+    
+    <!-- 中性颜色 -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="surface">#141218</color>
+    <color name="surface_variant">#49454F</color>
+    <color name="background_color">#141218</color>
+    
+    <!-- 文本颜色 -->
+    <color name="text_primary">#E6E1E5</color>
+    <color name="text_secondary">#C9C5CA</color>
+    <color name="text_tertiary">#938F96</color>
+    <color name="text_on_primary">#141218</color>
+    <color name="text_on_secondary">#141218</color>
+    
+    <!-- 阴影和边框 -->
+    <color name="outline">#938F96</color>
+    <color name="outline_variant">#49454F</color>
+    
+    <!-- 渐变背景 -->
+    <color name="gradient_start">#141218</color>
+    <color name="gradient_end">#2D2A32</color>
+    
+    <!-- 兼容性颜色 -->
+    <color name="purple_200">#D0BCFF</color>
+    <color name="purple_500">#D0BCFF</color>
+    <color name="purple_700">#B8A2FF</color>
+    <color name="teal_200">#80CBC4</color>
+    <color name="teal_700">#00796B</color>
+    <color name="accent">@color/primary</color>
+</resources>

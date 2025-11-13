@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- 保存菜单项 -->
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_save"
+        android:title="保存"
+        app:showAsAction="ifRoom"
+        app:iconTint="@color/on_primary" />
+
+    <!-- 清除菜单项 -->
+    <item
+        android:id="@+id/action_clear"
+        android:icon="@drawable/ic_clear"
+        android:title="清除"
+        app:showAsAction="ifRoom"
+        app:iconTint="@color/on_primary" />
+
+    <!-- 帮助菜单项 -->
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/ic_help"
+        android:title="帮助"
+        app:showAsAction="never"
+        app:iconTint="@color/on_primary" />
+
+</menu>

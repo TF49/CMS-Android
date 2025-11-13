@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CMSAndroid">
+
+        <!-- 登录Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 主Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 注册Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 忘记密码Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.ForgotPasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 户籍管理Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.HouseholdManagementActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 户籍表单Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.HouseholdFormActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 居民管理Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.ResidentManagementActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 居民表单Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.ResidentFormActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 教育管理Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.EducationManagementActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 教育表单Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.EducationFormActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 医疗管理Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.MedicalManagementActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+        <!-- 医疗表单Activity -->
+        <activity
+            android:name="com.example.cms_android.activity.MedicalFormActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CMSAndroid.NoActionBar" />
+
+    </application>
+
+</manifest>
