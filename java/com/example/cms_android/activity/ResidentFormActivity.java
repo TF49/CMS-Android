@@ -147,7 +147,7 @@ public class ResidentFormActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        // btnBack.setOnClickListener(v -> finish());
+        // 添加取消按钮的点击监听
         findViewById(R.id.btn_cancel).setOnClickListener(v -> finish());
 
         btnSave.setOnClickListener(v -> saveResident());

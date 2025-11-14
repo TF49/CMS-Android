@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.cms_android.R;
 import com.example.cms_android.database.AppDatabase;
@@ -67,6 +68,15 @@ public class MedicalFormActivity extends AppCompatActivity {
         setupResidentSpinner();
         setupClickListeners();
         loadMedicalData();
+        setupToolbar();
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
     }
 
     private void initViews() {
@@ -150,9 +160,17 @@ public class MedicalFormActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void setupClickListeners() {
+    private void setupClickListeners()
+    {   // 添加取消按钮的点击监听
         findViewById(R.id.btn_cancel).setOnClickListener(v -> finish());
+
         btnSave.setOnClickListener(v -> saveMedicalRecord());
+
+        // 为工具栏的返回按钮设置监听器
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
     }
 
     private void loadMedicalData() {

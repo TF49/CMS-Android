@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.cms_android.R;
 import com.example.cms_android.database.AppDatabase;
@@ -148,6 +149,11 @@ public class EducationFormActivity extends AppCompatActivity
 
     private void setupClickListeners()
     {
+        // 为工具栏的返回按钮设置监听器
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
 
         btnSave.setOnClickListener(v -> saveEducationRecord());
 
