@@ -1,0 +1,78 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.CMSAndroid" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Material Design 3 夜间主题定制 -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryContainer">@color/primary_dark</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryContainer">@color/secondary_dark</item>
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorTertiaryContainer">@color/tertiary_dark</item>
+        
+        <!-- 表面颜色 -->
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        
+        <!-- 文本颜色 -->
+        <item name="colorOnPrimary">@color/text_on_primary</item>
+        <item name="colorOnSecondary">@color/text_on_secondary</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        
+        <!-- 背景颜色 -->
+        <item name="android:colorBackground">@color/background_color</item>
+        
+        <!-- 状态栏和导航栏 -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryContainer</item>
+        <item name="android:navigationBarColor" tools:targetApi="o">?attr/colorSurface</item>
+        
+        <!-- 圆角 -->
+        <item name="cornerRadius">12dp</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.CMSAndroid.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.CMSAndroid.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.CMSAndroid.Large</item>
+        
+        <!-- 字体 -->
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.CMSAndroid.HeadlineSmall</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.CMSAndroid.TitleMedium</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.CMSAndroid.BodyMedium</item>
+    </style>
+
+    <style name="Theme.CMSAndroid" parent="Base.Theme.CMSAndroid" />
+    
+    <!-- 形状外观 -->
+    <style name="ShapeAppearance.CMSAndroid.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+    
+    <style name="ShapeAppearance.CMSAndroid.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    
+    <style name="ShapeAppearance.CMSAndroid.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+    
+    <!-- 文本外观 -->
+    <style name="TextAppearance.CMSAndroid.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    
+    <style name="TextAppearance.CMSAndroid.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.15</item>
+    </style>
+    
+    <style name="TextAppearance.CMSAndroid.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.25</item>
+    </style>
+</resources>
