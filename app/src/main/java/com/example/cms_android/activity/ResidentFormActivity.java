@@ -125,7 +125,8 @@ public class ResidentFormActivity extends AppCompatActivity {
     private void setupHouseholdSpinner() {
         // 从数据库获取真实的户籍数据
         new Thread(() -> {
-            householdList = householdDao.getAllHouseholds(); // 从数据库获取所有户籍
+            // 根据用户权限获取户籍数据
+            householdList = householdDao.getHouseholdsByOwner(currentUser.getId()); // 只获取当前用户的户籍
             runOnUiThread(() -> {
                 List<String> householdNumbers = new ArrayList<>();
                 for (Household household : householdList) {

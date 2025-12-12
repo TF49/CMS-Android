@@ -69,4 +69,65 @@
     <string name="male">男</string>
     <string name="female">女</string>
     <string name="other">其他</string>
+    
+    <!-- 搜索字段选项 -->
+    <!-- 教育管理搜索字段 -->
+    <string-array name="search_fields_education">
+        <item>居民姓名</item>
+        <item>学校名称</item>
+        <item>教育程度</item>
+        <item>专业</item>
+        <item>状态</item>
+    </string-array>
+    <string-array name="search_field_values_education">
+        <item>residentName</item>
+        <item>schoolName</item>
+        <item>educationLevel</item>
+        <item>major</item>
+        <item>status</item>
+    </string-array>
+    
+    <!-- 医疗管理搜索字段 -->
+    <string-array name="search_fields_medical">
+        <item>居民姓名</item>
+        <item>医院</item>
+        <item>科室</item>
+        <item>诊断结果</item>
+        <item>医生</item>
+    </string-array>
+    <string-array name="search_field_values_medical">
+        <item>residentName</item>
+        <item>hospital</item>
+        <item>department</item>
+        <item>diagnosis</item>
+        <item>doctor</item>
+    </string-array>
+    
+    <!-- 居民管理搜索字段 -->
+    <string-array name="search_fields_resident">
+        <item>姓名</item>
+        <item>身份证号</item>
+        <item>性别</item>
+        <item>电话号码</item>
+    </string-array>
+    <string-array name="search_field_values_resident">
+        <item>name</item>
+        <item>idCard</item>
+        <item>gender</item>
+        <item>phoneNumber</item>
+    </string-array>
+    
+    <!-- 户籍管理搜索字段 -->
+    <string-array name="search_fields_household">
+        <item>户主姓名</item>
+        <item>户籍编号</item>
+        <item>地址</item>
+        <item>联系电话</item>
+    </string-array>
+    <string-array name="search_field_values_household">
+        <item>householderName</item>
+        <item>householdNumber</item>
+        <item>address</item>
+        <item>phoneNumber</item>
+    </string-array>
 </resources>

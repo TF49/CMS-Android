@@ -37,6 +37,7 @@ public class Medical {
     private String doctor; // 主治医生
     private double cost; // 总费用
     private double insurance; // 医保报销
+    private long ownerId; // 关联的用户ID，用于权限控制
 
     public Medical() {}
 
@@ -45,7 +46,7 @@ public class Medical {
                   String chronicDiseases, String surgeries, String medications, 
                   String insuranceType, String insuranceNumber, String lastCheckupDate, String notes,
                   String hospital, String department, String diagnosis, String treatment,
-                  String doctor, double cost, double insurance) {
+                  String doctor, double cost, double insurance, long ownerId) {
         this.residentId = residentId;
         this.bloodType = bloodType;
         this.allergies = allergies;
@@ -63,6 +64,7 @@ public class Medical {
         this.doctor = doctor;
         this.cost = cost;
         this.insurance = insurance;
+        this.ownerId = ownerId;
     }
 
     // Getters and Setters
@@ -119,4 +121,7 @@ public class Medical {
     
     public double getInsurance() { return insurance; }
     public void setInsurance(double insurance) { this.insurance = insurance; }
+    
+    public long getOwnerId() { return ownerId; }
+    public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
 }

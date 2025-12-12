@@ -17,13 +17,14 @@ public class Household {
     private String householdType; // 户籍类型（城镇/农村）
     private int populationCount; // 人口数量
     private String notes; // 备注
+    private long ownerId; // 关联的用户ID，用于权限控制
 
     public Household() {}
 
     @Ignore
     public Household(String householdNumber, String address, String householderName, 
                     String householderIdCard, String phoneNumber, String registrationDate, 
-                    String householdType, int populationCount, String notes) {
+                    String householdType, int populationCount, String notes, long ownerId) {
         this.householdNumber = householdNumber;
         this.address = address;
         this.householderName = householderName;
@@ -33,6 +34,7 @@ public class Household {
         this.householdType = householdType;
         this.populationCount = populationCount;
         this.notes = notes;
+        this.ownerId = ownerId;
     }
 
     // Getters and Setters
@@ -65,4 +67,7 @@ public class Household {
     
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+    
+    public long getOwnerId() { return ownerId; }
+    public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
 }

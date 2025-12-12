@@ -48,7 +48,7 @@
 ### 数据库
 - **Room Database** - Android官方ORM框架
 - **SQLite** - 本地数据库存储
-- **数据库版本 6** - 支持多版本迁移
+- **数据库版本 7** - 支持多版本迁移
 
 ### UI/UX
 - **Material Design 3** - 现代化设计语言
@@ -93,9 +93,19 @@ app/src/main/java/com/example/cms_android/
 │   ├── Education.java              # 教育模型
 │   └── Medical.java                # 医疗模型
 ├── repository/        # 数据仓库
-│   ├── UserRepository.java         # 用户仓库
-│   └── UserRepositoryImpl.java      # 用户仓库实现
+│   ├── EducationRepository.java    # 教育记录仓库
+│   ├── EducationRepositoryImpl.java # 教育记录仓库实现
+│   ├── HouseholdRepository.java    # 户籍仓库
+│   ├── HouseholdRepositoryImpl.java # 户籍仓库实现
+│   ├── MedicalRepository.java      # 医疗记录仓库
+│   ├── MedicalRepositoryImpl.java   # 医疗记录仓库实现
+│   ├── PermissionChecker.java       # 权限检查工具
+│   ├── ResidentRepository.java      # 居民信息仓库
+│   ├── ResidentRepositoryImpl.java   # 居民信息仓库实现
+│   ├── UserRepository.java          # 用户仓库
+│   └── UserRepositoryImpl.java       # 用户仓库实现
 └── utils/             # 工具类
+    ├── PermissionManager.java      # 权限管理工具
     ├── SharedPreferencesManager.java # 本地存储管理
     └── ValidationUtils.java        # 验证工具
 ```
@@ -112,7 +122,7 @@ app/src/main/java/com/example/cms_android/
 
 1. **克隆项目**
    ```bash
-   git clone https://github.com/your-username/CMS-Android.git
+   git clone https://github.com/TF49/CMS-Android.git
    cd CMS-Android
    ```
 
@@ -220,8 +230,8 @@ app/src/main/java/com/example/cms_android/
 
 ## 📞 联系方式
 
-- 项目主页: [CMS-Android](https://github.com/your-username/CMS-Android)
-- 问题反馈: [Issues](https://github.com/your-username/CMS-Android/issues)
+- 项目主页: [CMS-Android](https://github.com/TF49/CMS-Android)
+- 问题反馈: [Issues](https://github.com/TF49/CMS-Android/issues)
 - 邮箱: your-email@example.com
 
 ## 🙏 致谢

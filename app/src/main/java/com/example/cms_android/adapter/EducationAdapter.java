@@ -43,12 +43,8 @@ public class EducationAdapter extends RecyclerView.Adapter<EducationAdapter.Educ
             // 编辑按钮对所有登录用户可见
             holder.btnEdit.setVisibility(View.VISIBLE);
             
-            // 删除按钮仅对管理员可见
-            if (PermissionManager.canDelete(currentUser)) {
-                holder.btnDelete.setVisibility(View.VISIBLE);
-            } else {
-                holder.btnDelete.setVisibility(View.GONE);
-            }
+            // 删除按钮对所有登录用户可见
+            holder.btnDelete.setVisibility(View.VISIBLE);
         } else {
             // 如果没有用户信息，默认隐藏所有操作按钮
             holder.btnEdit.setVisibility(View.GONE);

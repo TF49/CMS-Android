@@ -29,6 +29,7 @@ public class Education {
     private String status; // 状态
     private boolean isCurrent; // 是否在读
     private String notes; // 备注
+    private long ownerId; // 关联的用户ID，用于权限控制
 
     // Room 使用的无参构造函数
     public Education() {}
@@ -38,7 +39,7 @@ public class Education {
     @Ignore
     public Education(long residentId, String educationLevel, String schoolName,
                      String major, String enrollmentDate, String graduationDate,
-                     String degree, String status, boolean isCurrent, String notes) {
+                     String degree, String status, boolean isCurrent, String notes, long ownerId) {
         this.residentId = residentId;
         this.educationLevel = educationLevel;
         this.schoolName = schoolName;
@@ -49,6 +50,7 @@ public class Education {
         this.status = status;
         this.isCurrent = isCurrent;
         this.notes = notes;
+        this.ownerId = ownerId;
     }
 
     // Getters and Setters
@@ -84,4 +86,7 @@ public class Education {
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+    
+    public long getOwnerId() { return ownerId; }
+    public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
 }

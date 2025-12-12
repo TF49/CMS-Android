@@ -25,7 +25,7 @@ import java.util.Locale;
 
 @Database(
         entities = {Household.class, Resident.class, Education.class, Medical.class, User.class},
-        version = 6
+        version = 7
 )
 public abstract class AppDatabase extends RoomDatabase {
     public abstract HouseholdDao householdDao();
@@ -94,6 +94,33 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
     
+    // 数据库迁移：从版本6到版本7，为household、education和medical表添加ownerId字段
+    static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // 为households表添加ownerId字段
+            try {
+                database.execSQL("ALTER TABLE households ADD COLUMN ownerId INTEGER NOT NULL DEFAULT 1");
+            } catch (Exception e) {
+                // 字段可能已经存在，忽略错误
+            }
+            
+            // 为education表添加ownerId字段
+            try {
+                database.execSQL("ALTER TABLE education ADD COLUMN ownerId INTEGER NOT NULL DEFAULT 1");
+            } catch (Exception e) {
+                // 字段可能已经存在，忽略错误
+            }
+            
+            // 为medical表添加ownerId字段
+            try {
+                database.execSQL("ALTER TABLE medical ADD COLUMN ownerId INTEGER NOT NULL DEFAULT 1");
+            } catch (Exception e) {
+                // 字段可能已经存在，忽略错误
+            }
+        }
+    };
+    
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
@@ -103,7 +130,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         AppDatabase.class,
                         "census_database"
                     )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
                     // 添加这行以启用数据库检查
                     .allowMainThreadQueries() // 仅用于调试，生产环境中应避免在主线程执行数据库操作
                     .addCallback(new RoomDatabase.Callback() {

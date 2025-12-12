@@ -13,6 +13,9 @@ import com.example.cms_android.R;
 import com.example.cms_android.database.AppDatabase;
 import com.example.cms_android.dao.HouseholdDao;
 import com.example.cms_android.model.Household;
+import com.example.cms_android.model.User;
+import com.example.cms_android.utils.SharedPreferencesManager;
+import com.example.cms_android.utils.PermissionManager;
 
 public class HouseholdFormActivity extends AppCompatActivity {
 
@@ -21,6 +24,8 @@ public class HouseholdFormActivity extends AppCompatActivity {
     private Button btnSave, btnCancel;
     private HouseholdDao householdDao;
     private Household currentHousehold;
+    private SharedPreferencesManager sharedPreferencesManager;
+    private User currentUser;
     
     // 标识是否为编辑模式
     private boolean isEditMode = false;
@@ -31,6 +36,8 @@ public class HouseholdFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_household_form);
 
         householdDao = AppDatabase.getDatabase(this).householdDao();
+        sharedPreferencesManager = new SharedPreferencesManager(this);
+        currentUser = sharedPreferencesManager.getCurrentUser();
 
         initializeViews();
         setupClickListeners();
@@ -139,6 +146,12 @@ public class HouseholdFormActivity extends AppCompatActivity {
         }
 
         if (isEditMode && currentHousehold != null) {
+            // 验证编辑权限
+            if (!PermissionManager.canModifyHousehold(currentUser, currentHousehold)) {
+                Toast.makeText(this, "您没有权限编辑此户籍信息", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
             // 编辑模式，更新现有记录
             currentHousehold.setHouseholdNumber(householdNumber);
             currentHousehold.setAddress(address);
@@ -154,7 +167,7 @@ public class HouseholdFormActivity extends AppCompatActivity {
         } else {
             // 新增模式，创建新记录
             final Household household = new Household(householdNumber, address, householderName, 
-                    householderIdCard, phoneNumber, registrationDate, householdType, populationCount, notes);
+                    householderIdCard, phoneNumber, registrationDate, householdType, populationCount, notes, currentUser.getId());
 
             insertHousehold(household);
         }

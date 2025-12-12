@@ -20,531 +20,426 @@
             app:title="医疗信息"
             app:titleTextColor="@color/text_on_primary"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:backgroundTint="@color/primary"
-            app:menu="@menu/medical_form_menu" />
+            app:backgroundTint="@color/primary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- 主内容容器 -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginTop="80dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp"
+        app:cardBackgroundColor="@color/surface"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:padding="20dp">
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="24dp">
 
-                <!-- 居民选择卡片 -->
-                <com.google.android.material.card.MaterialCardView
+                <!-- 居民选择 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_resident"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                    <LinearLayout
+                    <Spinner
+                        android:id="@+id/spinner_resident"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="居民信息"
-                            android:textSize="18sp"
-                            android:textColor="@color/text_primary"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 居民选择 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_resident"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <Spinner
-                                android:id="@+id/spinner_resident"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="16dp"
-                                android:paddingEnd="16dp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- 基本信息卡片 -->
-                <com.google.android.material.card.MaterialCardView
+                <!-- 医院 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_hospital"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_hospital"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:hint="医院名称 *"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="基本信息"
-                            android:textSize="18sp"
-                            android:textColor="@color/text_primary"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 医院 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_hospital"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_hospital"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="医院名称 *"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- 科室 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_department"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_department"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="科室 *"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- 诊断 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_diagnosis"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_diagnosis"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="诊断 *"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- 治疗方案 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_treatment"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_treatment"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="治疗方案 *"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- 主治医生 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_doctor"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_doctor"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="主治医生 *"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- 总费用 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_cost"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cost"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="总费用 (元) *"
-                                android:maxLines="1"
-                                android:inputType="numberDecimal"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- 医保报销 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_insurance"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_insurance"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="医保报销金额 (元)"
-                                android:maxLines="1"
-                                android:inputType="numberDecimal"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- 血型和过敏史卡片 -->
-                <com.google.android.material.card.MaterialCardView
+                <!-- 科室 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_department"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_department"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:hint="科室 *"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="血型和过敏史"
-                            android:textSize="18sp"
-                            android:textColor="@color/text_primary"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 血型 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_blood_type"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_blood_type"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="血型"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- 过敏史 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_allergies"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_allergies"
-                                android:layout_width="match_parent"
-                                android:layout_height="120dp"
-                                android:hint="过敏史"
-                                android:gravity="top"
-                                android:inputType="textMultiLine"
-                                android:minLines="4"
-                                android:imeOptions="actionNext" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- 病史信息卡片 -->
-                <com.google.android.material.card.MaterialCardView
+                <!-- 诊断 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_diagnosis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_diagnosis"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:hint="诊断 *"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="病史信息"
-                            android:textSize="18sp"
-                            android:textColor="@color/text_primary"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 慢性病史 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_chronic_diseases"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
+                <!-- 治疗方案 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_treatment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_chronic_diseases"
-                                android:layout_width="match_parent"
-                                android:layout_height="120dp"
-                                android:hint="慢性病史"
-                                android:gravity="top"
-                                android:inputType="textMultiLine"
-                                android:minLines="4"
-                                android:imeOptions="actionNext" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_treatment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="治疗方案 *"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 手术史 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_surgeries"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
+                <!-- 主治医生 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_doctor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_surgeries"
-                                android:layout_width="match_parent"
-                                android:layout_height="120dp"
-                                android:hint="手术史"
-                                android:gravity="top"
-                                android:inputType="textMultiLine"
-                                android:minLines="4"
-                                android:imeOptions="actionNext" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_doctor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="主治医生 *"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 常用药物 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_medications"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
+                <!-- 总费用 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_cost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_medications"
-                                android:layout_width="match_parent"
-                                android:layout_height="120dp"
-                                android:hint="常用药物"
-                                android:gravity="top"
-                                android:inputType="textMultiLine"
-                                android:minLines="4"
-                                android:imeOptions="actionNext" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_cost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="总费用 (元) *"
+                        android:maxLines="1"
+                        android:inputType="numberDecimal"
+                        android:imeOptions="actionNext" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 医保类型 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_insurance_type"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
+                <!-- 医保报销 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_insurance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_insurance_type"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="医保类型"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:imeOptions="actionNext" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_insurance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="医保报销金额 (元)"
+                        android:maxLines="1"
+                        android:inputType="numberDecimal"
+                        android:imeOptions="actionNext" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 医保号码 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_insurance_number"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
+                <!-- 血型 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_blood_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_insurance_number"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="医保号码"
-                                android:maxLines="1"
-                                android:inputType="text"
-                                android:imeOptions="actionNext" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_blood_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="血型"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 最后体检日期 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_last_checkup_date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
+                <!-- 过敏史 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_allergies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_last_checkup_date"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="最后体检日期"
-                                android:maxLines="1"
-                                android:inputType="date"
-                                android:focusable="false"
-                                android:clickable="true" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_allergies"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:hint="过敏史"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:minLines="4"
+                        android:imeOptions="actionNext" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- 备注 -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_notes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp">
+                <!-- 慢性病史 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_chronic_diseases"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_notes"
-                                android:layout_width="match_parent"
-                                android:layout_height="120dp"
-                                android:hint="备注"
-                                android:gravity="top"
-                                android:inputType="textMultiLine"
-                                android:minLines="4"
-                                android:imeOptions="actionNext" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_chronic_diseases"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:hint="慢性病史"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:minLines="4"
+                        android:imeOptions="actionNext" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    </LinearLayout>
+                <!-- 手术史 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_surgeries"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
 
-                </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_surgeries"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:hint="手术史"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:minLines="4"
+                        android:imeOptions="actionNext" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 常用药物 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_medications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_medications"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:hint="常用药物"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:minLines="4"
+                        android:imeOptions="actionNext" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 医保类型 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_insurance_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_insurance_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="医保类型"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 医保号码 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_insurance_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_insurance_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="医保号码"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionNext" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 最后体检日期 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_last_checkup_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_last_checkup_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="最后体检日期"
+                        android:maxLines="1"
+                        android:inputType="date"
+                        android:focusable="false"
+                        android:clickable="true" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 备注 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_notes"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:hint="备注"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:minLines="4"
+                        android:imeOptions="actionDone" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- 按钮区域 -->
                 <LinearLayout

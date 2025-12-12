@@ -7,9 +7,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +47,8 @@ public class MedicalManagementActivity extends AppCompatActivity {
     private ResidentDao residentDao;
     private EditText searchInput;
     private Button btnSearch;
+    private Spinner searchFieldSpinner;
+    private String selectedSearchField = "all"; // 默认搜索所有字段
     
     // 添加用户权限相关变量
     private User currentUser;
@@ -101,7 +105,7 @@ public class MedicalManagementActivity extends AppCompatActivity {
             @Override
             public void onEditClick(Medical record) {
                 // 检查编辑权限
-                if (PermissionManager.canEdit(currentUser)) {
+                if (PermissionManager.canModifyMedical(currentUser, record)) {
                     editMedicalRecord(record);
                 } else {
                     // 显示权限不足提示
@@ -112,7 +116,7 @@ public class MedicalManagementActivity extends AppCompatActivity {
             @Override
             public void onDeleteClick(Medical record) {
                 // 检查删除权限
-                if (PermissionManager.canDelete(currentUser)) {
+                if (PermissionManager.canRemoveMedical(currentUser, record)) {
                     deleteMedicalRecord(record);
                 } else {
                     // 显示权限不足提示
@@ -124,6 +128,22 @@ public class MedicalManagementActivity extends AppCompatActivity {
     }
 
     private void setupSearchFunctionality() {
+        // 初始化搜索字段选择
+        searchFieldSpinner = findViewById(R.id.spinner_search_field);
+        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedSearchField = parent.getItemAtPosition(position).toString();
+                // 当选择字段变化时，重新过滤
+                filterMedicalRecords(searchInput.getText().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedSearchField = "all";
+            }
+        });
+        
         // 监听搜索输入框的文本变化
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -152,7 +172,7 @@ public class MedicalManagementActivity extends AppCompatActivity {
         // 监听搜索按钮点击
         btnSearch.setOnClickListener(v -> filterMedicalRecords(searchInput.getText().toString()));
     }
-
+    
     private void filterMedicalRecords(String query) {
         if (allMedicalRecords == null) return;
 
@@ -163,10 +183,38 @@ public class MedicalManagementActivity extends AppCompatActivity {
         } else {
             String lowerCaseQuery = query.toLowerCase();
             for (Medical medical : allMedicalRecords) {
-                if (medical.getHospital().toLowerCase().contains(lowerCaseQuery) ||
-                    medical.getDepartment().toLowerCase().contains(lowerCaseQuery) ||
-                    medical.getDiagnosis().toLowerCase().contains(lowerCaseQuery) ||
-                    medical.getDoctor().toLowerCase().contains(lowerCaseQuery)) {
+                boolean match = false;
+                
+                switch (selectedSearchField) {
+                    case "居民姓名":
+                        // 获取居民姓名并匹配
+                        Resident resident = residentDao.getResidentById(medical.getResidentId());
+                        if (resident != null && resident.getName().toLowerCase().contains(lowerCaseQuery)) {
+                            match = true;
+                        }
+                        break;
+                    case "医院":
+                        match = medical.getHospital().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "科室":
+                        match = medical.getDepartment().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "诊断结果":
+                        match = medical.getDiagnosis().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "医生":
+                        match = medical.getDoctor().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    default:
+                        // 默认搜索居民姓名
+                        Resident defaultResident = residentDao.getResidentById(medical.getResidentId());
+                        if (defaultResident != null && defaultResident.getName().toLowerCase().contains(lowerCaseQuery)) {
+                            match = true;
+                        }
+                        break;
+                }
+                
+                if (match) {
                     medicalRecords.add(medical);
                 }
             }
@@ -199,12 +247,6 @@ public class MedicalManagementActivity extends AppCompatActivity {
     private void updateUIBasedOnPermissions() {
         // 如果是普通用户，隐藏添加按钮
         if (PermissionManager.isUser(currentUser)) {
-            // 隐藏浮动添加按钮
-            com.google.android.material.floatingactionbutton.FloatingActionButton fabAdd = findViewById(R.id.fab_add);
-            if (fabAdd != null) {
-                fabAdd.setVisibility(View.GONE);
-            }
-            
             // 隐藏第一个添加按钮
             btnAddFirst.setVisibility(View.GONE);
         }
@@ -221,16 +263,10 @@ public class MedicalManagementActivity extends AppCompatActivity {
             }
         });
         
-        // 为工具栏的返回按钮设置监听器
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            toolbar.setNavigationOnClickListener(v -> finish());
-        }
-        
-        // 为浮动按钮设置监听器
-        com.google.android.material.floatingactionbutton.FloatingActionButton fabAdd = findViewById(R.id.fab_add);
-        if (fabAdd != null) {
-            fabAdd.setOnClickListener(v -> {
+        // 为搜索栏添加按钮设置监听器
+        com.google.android.material.button.MaterialButton btnAddSearch = findViewById(R.id.btn_add_search);
+        if (btnAddSearch != null) {
+            btnAddSearch.setOnClickListener(v -> {
                 // 检查添加权限
                 if (PermissionManager.canEdit(currentUser)) {
                     addMedicalRecord();
@@ -239,13 +275,30 @@ public class MedicalManagementActivity extends AppCompatActivity {
                 }
             });
         }
+        
+        // 为工具栏的返回按钮设置监听器
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
+        
+
     }
 
     private void loadMedicalRecords() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final List<Medical> medicalRecordsFromDB = medicalDao.getAllMedicalRecords();
+                final List<Medical> medicalRecordsFromDB;
+                // 根据用户角色选择不同的查询方法
+                if (PermissionManager.isAdmin(currentUser)) {
+                    // 管理员可以查看所有数据
+                    medicalRecordsFromDB = medicalDao.getAllMedicalRecords();
+                } else {
+                    // 普通用户只能查看自己的数据
+                    medicalRecordsFromDB = medicalDao.getAllMedicalRecordsByOwner(currentUser.getId());
+                }
+                
                 // 获取所有相关的居民信息
                 Map<Long, String> residentNames = new HashMap<>();
                 for (Medical medical : medicalRecordsFromDB) {
@@ -326,7 +379,7 @@ public class MedicalManagementActivity extends AppCompatActivity {
                         )
                         .setPositiveButton("确定", null)
                         // 只有具有编辑权限的用户才能看到编辑按钮
-                        .setNeutralButton(PermissionManager.canEdit(currentUser) ? "编辑" : null, (dialog, which) -> editMedicalRecord(record))
+                        .setNeutralButton(PermissionManager.canModifyMedical(currentUser, record) ? "编辑" : null, (dialog, which) -> editMedicalRecord(record))
                         .show();
             });
         }).start();

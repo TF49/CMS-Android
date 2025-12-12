@@ -7,8 +7,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,7 +31,7 @@ import com.example.cms_android.utils.PermissionManager;
 import com.example.cms_android.utils.SharedPreferencesManager;
 import com.example.cms_android.repository.ResidentRepository;
 import com.example.cms_android.repository.ResidentRepositoryImpl;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +45,12 @@ public class ResidentManagementActivity extends AppCompatActivity {
     private ResidentAdapter adapter;
     private EditText searchInput;
     private Button btnSearch;
+    private Spinner searchFieldSpinner;
     private List<Resident> allResidents;
     private List<Resident> filteredResidents;
     private SharedPreferencesManager sharedPreferencesManager;
     private User currentUser; // 添加当前用户字段
+    private String selectedSearchField = "all"; // 默认搜索所有字段
     private ResidentRepository residentRepository; // 添加Repository
     
     // 定义请求码
@@ -115,6 +119,22 @@ public class ResidentManagementActivity extends AppCompatActivity {
     }
 
     private void setupSearchFunctionality() {
+        // 初始化搜索字段选择
+        searchFieldSpinner = findViewById(R.id.spinner_search_field);
+        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedSearchField = parent.getItemAtPosition(position).toString();
+                // 当选择字段变化时，重新过滤
+                filterResidents(searchInput.getText().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedSearchField = "all";
+            }
+        });
+        
         // 监听搜索输入框的文本变化
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -143,7 +163,7 @@ public class ResidentManagementActivity extends AppCompatActivity {
         // 监听搜索按钮点击
         btnSearch.setOnClickListener(v -> filterResidents(searchInput.getText().toString()));
     }
-
+    
     private void filterResidents(String query) {
         if (allResidents == null) return;
 
@@ -154,10 +174,28 @@ public class ResidentManagementActivity extends AppCompatActivity {
         } else {
             String lowerCaseQuery = query.toLowerCase();
             for (Resident resident : allResidents) {
-                if (resident.getName().toLowerCase().contains(lowerCaseQuery) ||
-                    resident.getIdCard().toLowerCase().contains(lowerCaseQuery) ||
-                    resident.getGender().toLowerCase().contains(lowerCaseQuery) ||
-                    resident.getPhoneNumber().contains(query)) {
+                boolean match = false;
+                
+                switch (selectedSearchField) {
+                    case "姓名":
+                        match = resident.getName().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "身份证号":
+                        match = resident.getIdCard().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "性别":
+                        match = resident.getGender().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "电话号码":
+                        match = resident.getPhoneNumber().contains(query);
+                        break;
+                    default:
+                        // 默认搜索姓名
+                        match = resident.getName().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                }
+                
+                if (match) {
                     filteredResidents.add(resident);
                 }
             }
@@ -184,15 +222,15 @@ public class ResidentManagementActivity extends AppCompatActivity {
             toolbar.setNavigationOnClickListener(v -> finish());
         }
         
-        // 为浮动按钮设置监听器
-        FloatingActionButton fabAdd = findViewById(R.id.fab_add);
-        if (fabAdd != null) {
-            fabAdd.setOnClickListener(v -> {
+        // 为搜索栏添加按钮设置监听器
+        com.google.android.material.button.MaterialButton btnAddSearch = findViewById(R.id.btn_add_search);
+        if (btnAddSearch != null) {
+            btnAddSearch.setOnClickListener(v -> {
                 if (PermissionManager.canAdd(currentUser)) {
                     Intent intent = new Intent(ResidentManagementActivity.this, ResidentFormActivity.class);
                     startActivityForResult(intent, REQUEST_ADD_RESIDENT);
                 } else {
-                    Toast.makeText(this, "权限不足，只有管理员可以添加居民信息", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResidentManagementActivity.this, "权限不足，只有管理员可以添加居民信息", Toast.LENGTH_SHORT).show();
                 }
             });
         }

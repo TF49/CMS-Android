@@ -18,6 +18,8 @@ import com.example.cms_android.database.AppDatabase;
 import com.example.cms_android.dao.MedicalDao;
 import com.example.cms_android.dao.ResidentDao;
 import com.example.cms_android.model.Medical;
+import com.example.cms_android.model.User;
+import com.example.cms_android.utils.SharedPreferencesManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,6 +56,8 @@ public class MedicalFormActivity extends AppCompatActivity {
     private ResidentDao residentDao;
     private long medicalId = -1;
     private List<com.example.cms_android.model.Resident> residentList; // 添加居民列表
+    private SharedPreferencesManager sharedPreferencesManager;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class MedicalFormActivity extends AppCompatActivity {
 
         medicalDao = AppDatabase.getDatabase(this).medicalDao();
         residentDao = AppDatabase.getDatabase(this).residentDao();
+        sharedPreferencesManager = new SharedPreferencesManager(this);
+        currentUser = sharedPreferencesManager.getCurrentUser();
 
         initViews();
         setupDatePicker();
@@ -132,7 +138,7 @@ public class MedicalFormActivity extends AppCompatActivity {
 
     private void setupResidentSpinner() {
         new Thread(() -> {
-            residentList = residentDao.getAllResidents(); // 从数据库获取所有居民
+            residentList = residentDao.getResidentsByOwner(currentUser.getId()); // 只获取当前用户的居民
             runOnUiThread(() -> {
                 List<String> residentNames = new ArrayList<>();
                 for (com.example.cms_android.model.Resident resident : residentList) {
@@ -269,6 +275,11 @@ public class MedicalFormActivity extends AppCompatActivity {
                 record.setInsurance(Double.parseDouble(etInsurance.getText().toString()));
             } catch (NumberFormatException e) {
                 record.setInsurance(0);
+            }
+            
+            // 设置ownerId为当前用户的ID
+            if (currentUser != null) {
+                record.setOwnerId(currentUser.getId());
             }
 
             new Thread(() -> {

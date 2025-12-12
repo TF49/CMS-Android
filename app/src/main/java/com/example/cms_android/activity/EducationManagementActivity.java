@@ -7,8 +7,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -27,7 +29,8 @@ import com.example.cms_android.model.Resident;
 import com.example.cms_android.model.User;
 import com.example.cms_android.utils.PermissionManager;
 import com.example.cms_android.utils.SharedPreferencesManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,10 +46,12 @@ public class EducationManagementActivity extends AppCompatActivity
     private EducationAdapter adapter;
     private EditText searchInput;
     private Button btnSearch;
+    private Spinner searchFieldSpinner;
     private List<Education> allEducations;
     private List<Education> filteredEducations;
     private SharedPreferencesManager sharedPreferencesManager;
     private User currentUser; // 添加当前用户字段
+    private String selectedSearchField = "all"; // 默认搜索所有字段
     
     // 定义请求码
     private static final int REQUEST_ADD_EDUCATION = 1001;
@@ -100,25 +105,41 @@ public class EducationManagementActivity extends AppCompatActivity
 
             @Override
             public void onEditClick(Education education) {
-                if (PermissionManager.canEdit(currentUser)) {
+                if (PermissionManager.canModifyEducation(currentUser, education)) {
                     editEducation(education);
                 } else {
-                    Toast.makeText(EducationManagementActivity.this, "权限不足，无法编辑教育记录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EducationManagementActivity.this, "权限不足，无法编辑此教育记录", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onDeleteClick(Education education) {
-                if (PermissionManager.canDelete(currentUser)) {
+                if (PermissionManager.canRemoveEducation(currentUser, education)) {
                     deleteEducation(education);
                 } else {
-                    Toast.makeText(EducationManagementActivity.this, "权限不足，只有管理员可以删除教育记录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EducationManagementActivity.this, "权限不足，无法删除此教育记录", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
     private void setupSearchFunctionality() {
+        // 初始化搜索字段选择
+        searchFieldSpinner = findViewById(R.id.spinner_search_field);
+        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedSearchField = parent.getItemAtPosition(position).toString();
+                // 当选择字段变化时，重新过滤
+                filterEducations(searchInput.getText().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedSearchField = "all";
+            }
+        });
+        
         // 监听搜索输入框的文本变化
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -147,7 +168,7 @@ public class EducationManagementActivity extends AppCompatActivity
         // 监听搜索按钮点击
         btnSearch.setOnClickListener(v -> filterEducations(searchInput.getText().toString()));
     }
-
+    
     private void filterEducations(String query) {
         if (allEducations == null) return;
 
@@ -158,10 +179,38 @@ public class EducationManagementActivity extends AppCompatActivity
         } else {
             String lowerCaseQuery = query.toLowerCase();
             for (Education education : allEducations) {
-                if (education.getSchoolName().toLowerCase().contains(lowerCaseQuery) ||
-                    education.getEducationLevel().toLowerCase().contains(lowerCaseQuery) ||
-                    education.getMajor().toLowerCase().contains(lowerCaseQuery) ||
-                    education.getStatus().toLowerCase().contains(lowerCaseQuery)) {
+                boolean match = false;
+                
+                switch (selectedSearchField) {
+                    case "居民姓名":
+                        // 获取居民姓名并匹配
+                        Resident resident = residentDao.getResidentById(education.getResidentId());
+                        if (resident != null && resident.getName().toLowerCase().contains(lowerCaseQuery)) {
+                            match = true;
+                        }
+                        break;
+                    case "学校名称":
+                        match = education.getSchoolName().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "教育程度":
+                        match = education.getEducationLevel().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "专业":
+                        match = education.getMajor().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    case "状态":
+                        match = education.getStatus().toLowerCase().contains(lowerCaseQuery);
+                        break;
+                    default:
+                        // 默认搜索居民姓名
+                        Resident defaultResident = residentDao.getResidentById(education.getResidentId());
+                        if (defaultResident != null && defaultResident.getName().toLowerCase().contains(lowerCaseQuery)) {
+                            match = true;
+                        }
+                        break;
+                }
+                
+                if (match) {
                     filteredEducations.add(education);
                 }
             }
@@ -202,18 +251,20 @@ public class EducationManagementActivity extends AppCompatActivity
             toolbar.setNavigationOnClickListener(v -> finish());
         }
         
-        // 为浮动按钮设置监听器
-        FloatingActionButton fabAdd = findViewById(R.id.fab_add);
-        if (fabAdd != null) {
-            fabAdd.setOnClickListener(v -> {
+        // 为搜索栏添加按钮设置监听器
+        MaterialButton btnAddSearch = findViewById(R.id.btn_add_search);
+        if (btnAddSearch != null) {
+            btnAddSearch.setOnClickListener(v -> {
                 if (PermissionManager.canAdd(currentUser)) {
                     Intent intent = new Intent(EducationManagementActivity.this, EducationFormActivity.class);
                     startActivityForResult(intent, REQUEST_ADD_EDUCATION);
                 } else {
-                    Toast.makeText(this, "权限不足，只有管理员可以添加教育记录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "权限不足，无法添加教育记录", Toast.LENGTH_SHORT).show();
                 }
             });
         }
+        
+
         
         // 添加空状态下的"添加教育记录"按钮点击事件
         Button btnAddFirst = findViewById(R.id.btn_add_first);
@@ -226,7 +277,7 @@ public class EducationManagementActivity extends AppCompatActivity
                     Intent intent = new Intent(EducationManagementActivity.this, EducationFormActivity.class);
                     startActivityForResult(intent, REQUEST_ADD_EDUCATION);
                 } else {
-                    Toast.makeText(EducationManagementActivity.this, "权限不足，只有管理员可以添加教育记录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EducationManagementActivity.this, "权限不足，无法添加教育记录", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -253,11 +304,11 @@ public class EducationManagementActivity extends AppCompatActivity
                 builder.setTitle("教育记录详情")
                         .setMessage(details.toString())
                         .setPositiveButton("确定", null)
-                        .setNeutralButton(PermissionManager.canEdit(currentUser) ? "编辑" : null, (dialog, which) -> {
-                            if (PermissionManager.canEdit(currentUser)) {
+                        .setNeutralButton(PermissionManager.canModifyEducation(currentUser, education) ? "编辑" : null, (dialog, which) -> {
+                            if (PermissionManager.canModifyEducation(currentUser, education)) {
                                 editEducation(education);
                             } else {
-                                Toast.makeText(EducationManagementActivity.this, "权限不足，无法编辑教育记录", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EducationManagementActivity.this, "权限不足，无法编辑此教育记录", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .show();
@@ -303,7 +354,16 @@ public class EducationManagementActivity extends AppCompatActivity
             @Override
             public void run()
             {
-                final List<Education> educationRecords = educationDao.getAllEducationRecords();
+                final List<Education> educationRecords;
+                // 根据用户角色选择不同的查询方法
+                if (PermissionManager.isAdmin(currentUser)) {
+                    // 管理员可以查看所有数据
+                    educationRecords = educationDao.getAllEducationRecords();
+                } else {
+                    // 普通用户只能查看自己的数据
+                    educationRecords = educationDao.getAllEducationRecordsByOwner(currentUser.getId());
+                }
+                
                 // 获取所有相关的居民信息
                 Map<Long, String> residentNames = new HashMap<>();
                 for (Education education : educationRecords) {

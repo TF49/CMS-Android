@@ -20,6 +20,8 @@ import com.example.cms_android.database.AppDatabase;
 import com.example.cms_android.dao.EducationDao;
 import com.example.cms_android.dao.ResidentDao;
 import com.example.cms_android.model.Education;
+import com.example.cms_android.model.User;
+import com.example.cms_android.utils.SharedPreferencesManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ public class EducationFormActivity extends AppCompatActivity
     private ResidentDao residentDao;
     private long educationId = -1;
     private List<com.example.cms_android.model.Resident> residentList; // 添加居民列表
+    private SharedPreferencesManager sharedPreferencesManager;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +59,8 @@ public class EducationFormActivity extends AppCompatActivity
 
         educationDao = AppDatabase.getDatabase(this).educationDao();
         residentDao = AppDatabase.getDatabase(this).residentDao();
+        sharedPreferencesManager = new SharedPreferencesManager(this);
+        currentUser = sharedPreferencesManager.getCurrentUser();
 
         //初始化视图
         initViews();
@@ -119,7 +125,7 @@ public class EducationFormActivity extends AppCompatActivity
     private void setupResidentSpinner()
     {
         new Thread(() -> {
-            residentList = residentDao.getAllResidents(); // 从数据库获取所有居民
+            residentList = residentDao.getResidentsByOwner(currentUser.getId()); // 只获取当前用户的居民
             runOnUiThread(() -> {
                 List<String> residentNames = new ArrayList<>();
                 for (com.example.cms_android.model.Resident resident : residentList) {
@@ -233,6 +239,10 @@ public class EducationFormActivity extends AppCompatActivity
             record.setGraduationDate(etGraduationDate.getText().toString());
             record.setStatus(etStatus.getText().toString());
             record.setNotes(etNotes.getText().toString());
+            // 设置ownerId为当前用户的ID
+            if (currentUser != null) {
+                record.setOwnerId(currentUser.getId());
+            }
 
             new Thread(() ->
             {
