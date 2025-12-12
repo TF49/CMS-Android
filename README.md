@@ -232,7 +232,7 @@ app/src/main/java/com/example/cms_android/
 
 - 项目主页: [CMS-Android](https://github.com/TF49/CMS-Android)
 - 问题反馈: [Issues](https://github.com/TF49/CMS-Android/issues)
-- 邮箱: your-email@example.com
+- 邮箱: 2131969030@qq.com
 
 ## 🙏 致谢
 
