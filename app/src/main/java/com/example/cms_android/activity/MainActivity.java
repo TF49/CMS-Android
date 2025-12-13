@@ -14,7 +14,8 @@ import com.example.cms_android.model.User;
 import com.example.cms_android.utils.PermissionManager;
 import com.example.cms_android.utils.SharedPreferencesManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
     private CardView btnHouseholdManagement;
     private CardView btnResidentManagement;
     private CardView btnEducationManagement;
@@ -23,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferencesManager sharedPreferencesManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -40,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         setupClickListeners();
     }
 
-    private void initializeViews() {
+    private void initializeViews()
+    {
         btnHouseholdManagement = findViewById(R.id.btn_household_management);
         btnResidentManagement = findViewById(R.id.btn_resident_management);
         btnEducationManagement = findViewById(R.id.btn_education_management);
@@ -48,52 +51,65 @@ public class MainActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btn_logout); // 初始化退出按钮
     }
 
-    private void setupViewsBasedOnRole() {
+    private void setupViewsBasedOnRole()
+    {
         User currentUser = sharedPreferencesManager.getCurrentUser();
         
         // 如果是普通用户，提示某些功能受限
-        if (PermissionManager.isUser(currentUser)) {
+        if (PermissionManager.isUser(currentUser))
+        {
             Toast.makeText(this, "您是以普通用户身份登录，部分功能可能受限", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void setupClickListeners() {
-        btnHouseholdManagement.setOnClickListener(new View.OnClickListener() {
+    private void setupClickListeners()
+    {
+        btnHouseholdManagement.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(MainActivity.this, HouseholdManagementActivity.class);
                 startActivity(intent);
             }
         });
 
-        btnResidentManagement.setOnClickListener(new View.OnClickListener() {
+        btnResidentManagement.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(MainActivity.this, ResidentManagementActivity.class);
                 startActivity(intent);
             }
         });
 
-        btnEducationManagement.setOnClickListener(new View.OnClickListener() {
+        btnEducationManagement.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(MainActivity.this, EducationManagementActivity.class);
                 startActivity(intent);
             }
         });
 
-        btnMedicalManagement.setOnClickListener(new View.OnClickListener() {
+        btnMedicalManagement.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(MainActivity.this, MedicalManagementActivity.class);
                 startActivity(intent);
             }
         });
 
         // 添加退出登录功能
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        btnLogout.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 // 清除登录状态
                 sharedPreferencesManager.clearLoginInfo();
                 

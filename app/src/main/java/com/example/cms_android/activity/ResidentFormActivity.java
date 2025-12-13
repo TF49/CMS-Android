@@ -2,14 +2,11 @@ package com.example.cms_android.activity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +27,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ResidentFormActivity extends AppCompatActivity {
+public class ResidentFormActivity extends AppCompatActivity
+{
     private Button btnSave;
     private Spinner spinnerHousehold;
     private EditText etName;
@@ -51,7 +49,8 @@ public class ResidentFormActivity extends AppCompatActivity {
     private User currentUser; // 添加当前用户字段
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resident_form);
 
@@ -63,21 +62,27 @@ public class ResidentFormActivity extends AppCompatActivity {
         currentUser = sharedPreferencesManager.getCurrentUser();
 
         initViews();
+
         setupDatePicker();
+
         setupGenderSpinner(); // 添加性别Spinner设置
+
         setupHouseholdSpinner(); // 这将在新线程中加载数据
+
         setupClickListeners();
+
         loadResidentData();
     }
 
-    private void initViews() {
+    private void initViews()
+    {
         btnSave = findViewById(R.id.btn_save);
         spinnerHousehold = findViewById(R.id.spinner_household);
         etName = findViewById(R.id.et_name);
         etIdCard = findViewById(R.id.et_id_card);
-        spinnerGender = findViewById(R.id.spinner_gender); // 修改为spinner_gender
+        spinnerGender = findViewById(R.id.spinner_gender);
         etBirthDate = findViewById(R.id.et_birth_date);
-        etPhoneNumber = findViewById(R.id.et_phone); // 修改为et_phone
+        etPhoneNumber = findViewById(R.id.et_phone);
         etNotes = findViewById(R.id.et_notes);
 
         calendar = Calendar.getInstance();
@@ -85,7 +90,8 @@ public class ResidentFormActivity extends AppCompatActivity {
     }
 
     // 添加设置性别Spinner的方法
-    private void setupGenderSpinner() {
+    private void setupGenderSpinner()
+    {
         List<String> genders = new ArrayList<>();
         genders.add("男");
         genders.add("女");
@@ -99,16 +105,20 @@ public class ResidentFormActivity extends AppCompatActivity {
         spinnerGender.setAdapter(adapter);
     }
 
-    private void setupDatePicker() {
+    private void setupDatePicker()
+    {
         etBirthDate.setOnClickListener(v -> showDatePicker());
     }
 
-    private void showDatePicker() {
+    private void showDatePicker()
+    {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
-                new DatePickerDialog.OnDateSetListener() {
+                new DatePickerDialog.OnDateSetListener()
+                {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
+                    {
                         calendar.set(Calendar.YEAR, year);
                         calendar.set(Calendar.MONTH, month);
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -122,14 +132,18 @@ public class ResidentFormActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void setupHouseholdSpinner() {
+    private void setupHouseholdSpinner()
+    {
         // 从数据库获取真实的户籍数据
-        new Thread(() -> {
+        new Thread(() ->
+        {
             // 根据用户权限获取户籍数据
             householdList = householdDao.getHouseholdsByOwner(currentUser.getId()); // 只获取当前用户的户籍
-            runOnUiThread(() -> {
+            runOnUiThread(() ->
+            {
                 List<String> householdNumbers = new ArrayList<>();
-                for (Household household : householdList) {
+                for (Household household : householdList)
+                {
                     householdNumbers.add(household.getHouseholdNumber() + " - " + household.getHouseholderName() + "家庭");
                 }
 
@@ -142,9 +156,12 @@ public class ResidentFormActivity extends AppCompatActivity {
                 spinnerHousehold.setAdapter(adapter);
                 
                 // 如果是编辑模式，设置选中项
-                if (isEditMode && resident != null) {
-                    for (int i = 0; i < householdList.size(); i++) {
-                        if (householdList.get(i).getId() == resident.getHouseholdId()) {
+                if (isEditMode && resident != null)
+                {
+                    for (int i = 0; i < householdList.size(); i++)
+                    {
+                        if (householdList.get(i).getId() == resident.getHouseholdId())
+                        {
                             spinnerHousehold.setSelection(i);
                             break;
                         }
@@ -154,7 +171,8 @@ public class ResidentFormActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void setupClickListeners() {
+    private void setupClickListeners()
+    {
         // 添加取消按钮的点击监听
         findViewById(R.id.btn_cancel).setOnClickListener(v -> finish());
 
@@ -162,43 +180,53 @@ public class ResidentFormActivity extends AppCompatActivity {
         
         // 为工具栏的返回按钮设置监听器
         Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if (toolbar != null)
+        {
             toolbar.setNavigationOnClickListener(v -> finish());
         }
     }
 
-    private void loadResidentData() {
+    private void loadResidentData()
+    {
         // 检查是否传递了居民ID用于编辑
-        if (getIntent().hasExtra("resident_id")) {
+        if (getIntent().hasExtra("resident_id"))
+        {
             isEditMode = true;
             residentId = getIntent().getLongExtra("resident_id", -1);
-            // tvTitle.setText("编辑居民信息");
             
             // 加载居民数据
             loadResidentFromDatabase();
         }
     }
 
-    private void loadResidentFromDatabase() {
-        new Thread(() -> {
+    private void loadResidentFromDatabase()
+    {
+        new Thread(() ->
+        {
             resident = residentDao.getResidentById(residentId);
-            if (resident != null) {
+            if (resident != null)
+            {
                 runOnUiThread(this::populateFormData);
             }
         }).start();
     }
 
-    private void populateFormData() {
-        if (resident != null) {
+    private void populateFormData()
+    {
+        if (resident != null)
+        {
             // 设置户籍选择（这里简化处理，实际应该根据householdId查找户籍）
             // spinnerHousehold.setSelection(...);
             
             etName.setText(resident.getName());
             etIdCard.setText(resident.getIdCard());
             // 设置性别选择
-            if ("男".equals(resident.getGender())) {
+            if ("男".equals(resident.getGender()))
+            {
                 spinnerGender.setSelection(0);
-            } else if ("女".equals(resident.getGender())) {
+            }
+            else if ("女".equals(resident.getGender()))
+            {
                 spinnerGender.setSelection(1);
             }
             etBirthDate.setText(resident.getBirthDate());
@@ -207,28 +235,37 @@ public class ResidentFormActivity extends AppCompatActivity {
         }
     }
 
-    private void saveResident() {
+    private void saveResident()
+    {
         if (validateForm()) {
             Resident record = new Resident();
-            if (isEditMode && resident != null) {
+            if (isEditMode && resident != null)
+            {
                 record.setId(resident.getId());
             }
             
             // 设置所有者ID
-            if (currentUser != null) {
+            if (currentUser != null)
+            {
                 record.setOwnerId(currentUser.getId());
             }
             
             // 获取选中的户籍ID
-            if (householdList != null && !householdList.isEmpty()) {
+            if (householdList != null && !householdList.isEmpty())
+            {
                 int selectedPosition = spinnerHousehold.getSelectedItemPosition();
-                if (selectedPosition >= 0 && selectedPosition < householdList.size()) {
+                if (selectedPosition >= 0 && selectedPosition < householdList.size())
+                {
                     long householdId = householdList.get(selectedPosition).getId();
                     record.setHouseholdId(householdId);
-                } else {
+                }
+                else
+                {
                     record.setHouseholdId(1); // 默认值
                 }
-            } else {
+            }
+            else
+            {
                 record.setHouseholdId(1); // 默认值
             }
             
@@ -249,17 +286,23 @@ public class ResidentFormActivity extends AppCompatActivity {
             record.setBloodType(""); // 默认值
             record.setHouseholder(false); // 默认值
 
-            new Thread(() -> {
-                if (isEditMode && resident != null) {
+            new Thread(() ->
+            {
+                if (isEditMode && resident != null)
+                {
                     residentDao.update(record);
-                    runOnUiThread(() -> {
+                    runOnUiThread(() ->
+                    {
                         Toast.makeText(this, "居民信息更新成功", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
                     });
-                } else {
+                }
+                else
+                {
                     residentDao.insert(record);
-                    runOnUiThread(() -> {
+                    runOnUiThread(() ->
+                    {
                         Toast.makeText(this, "居民信息创建成功", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
@@ -269,20 +312,24 @@ public class ResidentFormActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validateForm() {
-        if (etName.getText().toString().trim().isEmpty()) {
+    private boolean validateForm()
+    {
+        if (etName.getText().toString().trim().isEmpty())
+        {
             Toast.makeText(this, "请输入姓名", Toast.LENGTH_SHORT).show();
             etName.requestFocus();
             return false;
         }
 
-        if (etIdCard.getText().toString().trim().isEmpty()) {
+        if (etIdCard.getText().toString().trim().isEmpty())
+        {
             Toast.makeText(this, "请输入身份证号", Toast.LENGTH_SHORT).show();
             etIdCard.requestFocus();
             return false;
         }
 
-        if (etBirthDate.getText().toString().trim().isEmpty()) {
+        if (etBirthDate.getText().toString().trim().isEmpty())
+        {
             Toast.makeText(this, "请选择出生日期", Toast.LENGTH_SHORT).show();
             return false;
         }

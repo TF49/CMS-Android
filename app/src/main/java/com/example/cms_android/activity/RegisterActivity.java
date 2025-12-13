@@ -2,7 +2,6 @@ package com.example.cms_android.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +25,8 @@ import java.util.Locale;
 /**
  * 注册Activity
  */
-public class RegisterActivity extends AppCompatActivity {
-    
+public class RegisterActivity extends AppCompatActivity
+{
     private UserRepository userRepository;
     private TextInputEditText etUsername, etPassword, etConfirmPassword, etIdCard;
     private TextInputLayout tilUsername, tilPassword, tilConfirmPassword, tilIdCard;
@@ -37,7 +36,8 @@ public class RegisterActivity extends AppCompatActivity {
     private SharedPreferencesManager sharedPreferencesManager;
     
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         
@@ -52,7 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
         setupClickListeners();
     }
     
-    private void initViews() {
+    private void initViews()
+    {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         etIdCard = findViewById(R.id.etIdCard);
@@ -74,7 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
         rbUser.setChecked(true);
     }
     
-    private void setupClickListeners() {
+    private void setupClickListeners()
+    {
         // 注册按钮点击事件
         btnRegister.setOnClickListener(v -> attemptRegister());
         
@@ -82,7 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
         findViewById(R.id.tvBackToLogin).setOnClickListener(v -> finish());
     }
     
-    private void attemptRegister() {
+    private void attemptRegister()
+    {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String idCard = etIdCard.getText().toString().trim();
@@ -91,13 +94,15 @@ public class RegisterActivity extends AppCompatActivity {
         // 获取用户选择的角色
         String role = rbAdmin.isChecked() ? "admin" : "user";
         
-        if (validateInputs(username, password, confirmPassword, idCard)) {
+        if (validateInputs(username, password, confirmPassword, idCard))
+        {
             // 开始注册
             performRegister(username, password, idCard, role);
         }
     }
     
-    private boolean validateInputs(String username, String password, String confirmPassword, String idCard) {
+    private boolean validateInputs(String username, String password, String confirmPassword, String idCard)
+    {
         // 清除之前的错误提示
         tilUsername.setError(null);
         tilPassword.setError(null);
@@ -105,52 +110,60 @@ public class RegisterActivity extends AppCompatActivity {
         tilIdCard.setError(null);
         
         // 验证用户名
-        if (TextUtils.isEmpty(username)) {
+        if (TextUtils.isEmpty(username))
+        {
             tilUsername.setError("请输入用户名");
             etUsername.requestFocus();
             return false;
         }
         
-        if (!ValidationUtils.isValidUsername(username)) {
+        if (!ValidationUtils.isValidUsername(username))
+        {
             tilUsername.setError(ValidationUtils.getUsernameError(username));
             etUsername.requestFocus();
             return false;
         }
         
         // 验证密码
-        if (TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password))
+        {
             tilPassword.setError("请输入密码");
             etPassword.requestFocus();
             return false;
         }
-        
-        if (!ValidationUtils.isValidPassword(password)) {
+
+        if (!ValidationUtils.isValidPassword(password))
+        {
             tilPassword.setError(ValidationUtils.getPasswordError(password));
             etPassword.requestFocus();
             return false;
         }
         
         // 验证确认密码
-        if (TextUtils.isEmpty(confirmPassword)) {
+        if (TextUtils.isEmpty(confirmPassword))
+        {
             tilConfirmPassword.setError("请确认密码");
             etConfirmPassword.requestFocus();
             return false;
         }
         
-        if (!password.equals(confirmPassword)) {
+        if (!password.equals(confirmPassword))
+        {
             tilConfirmPassword.setError("两次输入的密码不一致");
             etConfirmPassword.requestFocus();
             return false;
         }
         
         // 验证身份证
-        if (TextUtils.isEmpty(idCard)) {
+        if (TextUtils.isEmpty(idCard))
+        {
             tilIdCard.setError("请输入身份证号码");
             etIdCard.requestFocus();
             return false;
         }
         
-        if (!ValidationUtils.isValidIdCard(idCard)) {
+        if (!ValidationUtils.isValidIdCard(idCard))
+        {
             tilIdCard.setError(ValidationUtils.getIdCardError(idCard));
             etIdCard.requestFocus();
             return false;
@@ -159,14 +172,19 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
     
-    private void performRegister(String username, String password, String idCard, String role) {
+    private void performRegister(String username, String password, String idCard, String role)
+    {
         // 检查用户名是否已存在
-        userRepository.checkUsernameExists(username, new UserRepository.DataSourceCallback<Boolean>() {
+        userRepository.checkUsernameExists(username, new UserRepository.DataSourceCallback<Boolean>()
+        {
             @Override
-            public void onSuccess(Boolean usernameExists) {
-                if (usernameExists) {
+            public void onSuccess(Boolean usernameExists)
+            {
+                if (usernameExists)
+                {
                     // 用户名已存在
-                    runOnUiThread(() -> {
+                    runOnUiThread(() ->
+                    {
                         tilUsername.setError("用户名已存在");
                         etUsername.requestFocus();
                     });
@@ -174,11 +192,15 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 
                 // 检查身份证是否已存在
-                userRepository.checkIdCardExists(idCard, new UserRepository.DataSourceCallback<Boolean>() {
+                userRepository.checkIdCardExists(idCard, new UserRepository.DataSourceCallback<Boolean>()
+                {
                     @Override
-                    public void onSuccess(Boolean idCardExists) {
-                        if (idCardExists) {
-                            runOnUiThread(() -> {
+                    public void onSuccess(Boolean idCardExists)
+                    {
+                        if (idCardExists)
+                        {
+                            runOnUiThread(() ->
+                            {
                                 tilIdCard.setError("身份证已被注册");
                                 etIdCard.requestFocus();
                             });
@@ -186,12 +208,17 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                         
                         // 如果是管理员角色，检查是否已经存在管理员
-                        if ("admin".equals(role)) {
-                            userRepository.checkAdminCount(new UserRepository.DataSourceCallback<Integer>() {
+                        if ("admin".equals(role))
+                        {
+                            userRepository.checkAdminCount(new UserRepository.DataSourceCallback<Integer>()
+                            {
                                 @Override
-                                public void onSuccess(Integer adminCount) {
-                                    if (adminCount > 0) {
-                                        runOnUiThread(() -> {
+                                public void onSuccess(Integer adminCount)
+                                {
+                                    if (adminCount > 0)
+                                    {
+                                        runOnUiThread(() ->
+                                        {
                                             Toast.makeText(RegisterActivity.this, "系统中已存在管理员账户，无法创建新的管理员账户", Toast.LENGTH_LONG).show();
                                         });
                                         return;
@@ -202,21 +229,27 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                                 
                                 @Override
-                                public void onError(String error) {
-                                    runOnUiThread(() -> {
+                                public void onError(String error)
+                                {
+                                    runOnUiThread(() ->
+                                    {
                                         Toast.makeText(RegisterActivity.this, "检查管理员账户失败: " + error, Toast.LENGTH_SHORT).show();
                                     });
                                 }
                             });
-                        } else {
+                        }
+                        else
+                        {
                             // 创建新用户
                             createNewUser(username, password, idCard, role);
                         }
                     }
                     
                     @Override
-                    public void onError(String error) {
-                        runOnUiThread(() -> {
+                    public void onError(String error)
+                    {
+                        runOnUiThread(() ->
+                        {
                             Toast.makeText(RegisterActivity.this, "检查身份证失败: " + error, Toast.LENGTH_SHORT).show();
                         });
                     }
@@ -224,15 +257,18 @@ public class RegisterActivity extends AppCompatActivity {
             }
             
             @Override
-            public void onError(String error) {
-                runOnUiThread(() -> {
+            public void onError(String error)
+            {
+                runOnUiThread(() ->
+                {
                     Toast.makeText(RegisterActivity.this, "检查用户名失败: " + error, Toast.LENGTH_SHORT).show();
                 });
             }
         });
     }
 
-    private void createNewUser(String username, String password, String idCard, String role) {
+    private void createNewUser(String username, String password, String idCard, String role)
+    {
         // 创建新用户
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String currentTime = sdf.format(new Date());
@@ -247,10 +283,13 @@ public class RegisterActivity extends AppCompatActivity {
         newUser.setActive(true);
         
         // 注册用户
-        userRepository.register(newUser, new UserRepository.DataSourceCallback<Long>() {
+        userRepository.register(newUser, new UserRepository.DataSourceCallback<Long>()
+        {
             @Override
-            public void onSuccess(Long userId) {
-                runOnUiThread(() -> {
+            public void onSuccess(Long userId)
+            {
+                runOnUiThread(() ->
+                {
                     Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                     // 保存登录状态
                     newUser.setId(userId);
@@ -260,8 +299,10 @@ public class RegisterActivity extends AppCompatActivity {
             }
             
             @Override
-            public void onError(String error) {
-                runOnUiThread(() -> {
+            public void onError(String error)
+            {
+                runOnUiThread(() ->
+                {
                     Toast.makeText(RegisterActivity.this, "注册失败: " + error, Toast.LENGTH_SHORT).show();
                 });
             }

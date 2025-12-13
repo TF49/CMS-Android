@@ -10,9 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -34,8 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MedicalManagementActivity extends AppCompatActivity {
-
+public class MedicalManagementActivity extends AppCompatActivity
+{
     private RecyclerView recyclerView;
     private MedicalAdapter adapter;
     private List<Medical> medicalRecords;
@@ -59,7 +57,8 @@ public class MedicalManagementActivity extends AppCompatActivity {
     private static final int REQUEST_EDIT_MEDICAL = 1002;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_management);
 
@@ -80,7 +79,8 @@ public class MedicalManagementActivity extends AppCompatActivity {
         updateUIBasedOnPermissions();
     }
 
-    private void initViews() {
+    private void initViews()
+    {
         recyclerView = findViewById(R.id.recycler_view);
         layoutEmpty = findViewById(R.id.layout_empty);
         btnAddFirst = findViewById(R.id.btn_add_first);
@@ -88,37 +88,48 @@ public class MedicalManagementActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btn_search);
     }
 
-    private void setupRecyclerView() {
+    private void setupRecyclerView()
+    {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         medicalRecords = new ArrayList<>();
         allMedicalRecords = new ArrayList<>();
         adapter = new MedicalAdapter();
         // 设置适配器的当前用户
         adapter.setCurrentUser(currentUser);
-        adapter.setOnMedicalClickListener(new MedicalAdapter.OnMedicalClickListener() {
+        adapter.setOnMedicalClickListener(new MedicalAdapter.OnMedicalClickListener()
+        {
             @Override
-            public void onItemClick(Medical record) {
+            public void onItemClick(Medical record)
+            {
                 // 查看医疗记录详情
                 showMedicalRecordDetail(record);
             }
 
             @Override
-            public void onEditClick(Medical record) {
+            public void onEditClick(Medical record)
+            {
                 // 检查编辑权限
-                if (PermissionManager.canModifyMedical(currentUser, record)) {
+                if (PermissionManager.canModifyMedical(currentUser, record))
+                {
                     editMedicalRecord(record);
-                } else {
+                }
+                else
+                {
                     // 显示权限不足提示
                     showPermissionDeniedMessage();
                 }
             }
 
             @Override
-            public void onDeleteClick(Medical record) {
+            public void onDeleteClick(Medical record)
+            {
                 // 检查删除权限
-                if (PermissionManager.canRemoveMedical(currentUser, record)) {
+                if (PermissionManager.canRemoveMedical(currentUser, record))
+                {
                     deleteMedicalRecord(record);
-                } else {
+                }
+                else
+                {
                     // 显示权限不足提示
                     showPermissionDeniedMessage();
                 }
@@ -127,42 +138,54 @@ public class MedicalManagementActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void setupSearchFunctionality() {
+    private void setupSearchFunctionality()
+    {
         // 初始化搜索字段选择
         searchFieldSpinner = findViewById(R.id.spinner_search_field);
-        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 selectedSearchField = parent.getItemAtPosition(position).toString();
                 // 当选择字段变化时，重新过滤
                 filterMedicalRecords(searchInput.getText().toString());
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
                 selectedSearchField = "all";
             }
         });
         
         // 监听搜索输入框的文本变化
-        searchInput.addTextChangedListener(new TextWatcher() {
+        searchInput.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
                 filterMedicalRecords(s.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s)
+            {
+
             }
         });
 
         // 监听软键盘搜索按钮
-        searchInput.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        searchInput.setOnEditorActionListener((v, actionId, event) ->
+        {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH)
+            {
                 filterMedicalRecords(searchInput.getText().toString());
                 return true;
             }
@@ -173,23 +196,30 @@ public class MedicalManagementActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(v -> filterMedicalRecords(searchInput.getText().toString()));
     }
     
-    private void filterMedicalRecords(String query) {
+    private void filterMedicalRecords(String query)
+    {
         if (allMedicalRecords == null) return;
 
         medicalRecords = new ArrayList<>();
         
-        if (query.isEmpty()) {
+        if (query.isEmpty())
+        {
             medicalRecords.addAll(allMedicalRecords);
-        } else {
+        }
+        else
+        {
             String lowerCaseQuery = query.toLowerCase();
-            for (Medical medical : allMedicalRecords) {
+            for (Medical medical : allMedicalRecords)
+            {
                 boolean match = false;
                 
-                switch (selectedSearchField) {
+                switch (selectedSearchField)
+                {
                     case "居民姓名":
                         // 获取居民姓名并匹配
                         Resident resident = residentDao.getResidentById(medical.getResidentId());
-                        if (resident != null && resident.getName().toLowerCase().contains(lowerCaseQuery)) {
+                        if (resident != null && resident.getName().toLowerCase().contains(lowerCaseQuery))
+                        {
                             match = true;
                         }
                         break;
@@ -208,13 +238,15 @@ public class MedicalManagementActivity extends AppCompatActivity {
                     default:
                         // 默认搜索居民姓名
                         Resident defaultResident = residentDao.getResidentById(medical.getResidentId());
-                        if (defaultResident != null && defaultResident.getName().toLowerCase().contains(lowerCaseQuery)) {
+                        if (defaultResident != null && defaultResident.getName().toLowerCase().contains(lowerCaseQuery))
+                        {
                             match = true;
                         }
                         break;
                 }
                 
-                if (match) {
+                if (match)
+                {
                     medicalRecords.add(medical);
                 }
             }
@@ -223,14 +255,18 @@ public class MedicalManagementActivity extends AppCompatActivity {
         updateUI();
     }
 
-    private void updateUI() {
+    private void updateUI()
+    {
         // 获取所有相关的居民信息
         Map<Long, String> residentNames = new HashMap<>();
-        for (Medical medical : medicalRecords) {
+        for (Medical medical : medicalRecords)
+        {
             long residentId = medical.getResidentId();
-            if (!residentNames.containsKey(residentId)) {
+            if (!residentNames.containsKey(residentId))
+            {
                 Resident resident = residentDao.getResidentById(residentId);
-                if (resident != null) {
+                if (resident != null)
+                {
                     residentNames.put(residentId, resident.getName());
                 }
             }
@@ -244,33 +280,45 @@ public class MedicalManagementActivity extends AppCompatActivity {
     }
 
     // 根据用户权限更新UI
-    private void updateUIBasedOnPermissions() {
+    private void updateUIBasedOnPermissions()
+    {
         // 如果是普通用户，隐藏添加按钮
-        if (PermissionManager.isUser(currentUser)) {
+        if (PermissionManager.isUser(currentUser))
+        {
             // 隐藏第一个添加按钮
             btnAddFirst.setVisibility(View.GONE);
         }
     }
 
-    private void setupClickListeners() {
+    private void setupClickListeners()
+    {
         
-        btnAddFirst.setOnClickListener(v -> {
+        btnAddFirst.setOnClickListener(v ->
+        {
             // 检查添加权限
-            if (PermissionManager.canEdit(currentUser)) {
+            if (PermissionManager.canEdit(currentUser))
+            {
                 addMedicalRecord();
-            } else {
+            }
+            else
+            {
                 showPermissionDeniedMessage();
             }
         });
         
         // 为搜索栏添加按钮设置监听器
         com.google.android.material.button.MaterialButton btnAddSearch = findViewById(R.id.btn_add_search);
-        if (btnAddSearch != null) {
-            btnAddSearch.setOnClickListener(v -> {
+        if (btnAddSearch != null)
+        {
+            btnAddSearch.setOnClickListener(v ->
+            {
                 // 检查添加权限
-                if (PermissionManager.canEdit(currentUser)) {
+                if (PermissionManager.canEdit(currentUser))
+                {
                     addMedicalRecord();
-                } else {
+                }
+                else
+                {
                     showPermissionDeniedMessage();
                 }
             });
@@ -278,42 +326,54 @@ public class MedicalManagementActivity extends AppCompatActivity {
         
         // 为工具栏的返回按钮设置监听器
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if (toolbar != null)
+        {
             toolbar.setNavigationOnClickListener(v -> finish());
         }
         
 
     }
 
-    private void loadMedicalRecords() {
-        new Thread(new Runnable() {
+    private void loadMedicalRecords()
+    {
+        new Thread(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 final List<Medical> medicalRecordsFromDB;
                 // 根据用户角色选择不同的查询方法
-                if (PermissionManager.isAdmin(currentUser)) {
+                if (PermissionManager.isAdmin(currentUser))
+                {
                     // 管理员可以查看所有数据
                     medicalRecordsFromDB = medicalDao.getAllMedicalRecords();
-                } else {
+                }
+                else
+                {
                     // 普通用户只能查看自己的数据
                     medicalRecordsFromDB = medicalDao.getAllMedicalRecordsByOwner(currentUser.getId());
                 }
                 
                 // 获取所有相关的居民信息
                 Map<Long, String> residentNames = new HashMap<>();
-                for (Medical medical : medicalRecordsFromDB) {
+                for (Medical medical : medicalRecordsFromDB)
+                {
                     long residentId = medical.getResidentId();
-                    if (!residentNames.containsKey(residentId)) {
+                    if (!residentNames.containsKey(residentId))
+                    {
                         Resident resident = residentDao.getResidentById(residentId);
-                        if (resident != null) {
+                        if (resident != null)
+                        {
                             residentNames.put(residentId, resident.getName());
                         }
                     }
                 }
                 
-                runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         allMedicalRecords = medicalRecordsFromDB;
                         medicalRecords = new ArrayList<>(medicalRecordsFromDB);
                         adapter.updateData(medicalRecords);
@@ -327,32 +387,41 @@ public class MedicalManagementActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void updateEmptyState() {
-        if (medicalRecords.isEmpty()) {
+    private void updateEmptyState()
+    {
+        if (medicalRecords.isEmpty())
+        {
             layoutEmpty.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        } else {
+        }
+        else
+        {
             layoutEmpty.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
-    private void addMedicalRecord() {
+    private void addMedicalRecord()
+    {
         Intent intent = new Intent(this, MedicalFormActivity.class);
         startActivityForResult(intent, REQUEST_ADD_MEDICAL);
     }
 
-    private void editMedicalRecord(Medical record) {
+    private void editMedicalRecord(Medical record)
+    {
         Intent intent = new Intent(this, MedicalFormActivity.class);
         intent.putExtra("medical_id", record.getId());
         startActivityForResult(intent, REQUEST_EDIT_MEDICAL);
     }
 
-    private void showMedicalRecordDetail(Medical record) {
+    private void showMedicalRecordDetail(Medical record)
+    {
         // 在新线程中获取居民信息
-        new Thread(() -> {
+        new Thread(() ->
+        {
             Resident resident = residentDao.getResidentById(record.getResidentId());
-            runOnUiThread(() -> {
+            runOnUiThread(() ->
+            {
                 String residentName = (resident != null) ? resident.getName() : "未知居民";
                 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -385,14 +454,17 @@ public class MedicalManagementActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void deleteMedicalRecord(Medical record) {
+    private void deleteMedicalRecord(Medical record)
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("确认删除")
                 .setMessage("确定要删除居民ID为" + record.getResidentId() + "的医疗记录吗？")
                 .setPositiveButton("删除", (dialog, which) -> {
-                    new Thread(() -> {
+                    new Thread(() ->
+                    {
                         medicalDao.delete(record);
-                        runOnUiThread(() -> {
+                        runOnUiThread(() ->
+                        {
                             allMedicalRecords.remove(record);
                             medicalRecords.remove(record);
                             updateUI();
@@ -404,7 +476,8 @@ public class MedicalManagementActivity extends AppCompatActivity {
     }
 
     // 显示权限不足提示
-    private void showPermissionDeniedMessage() {
+    private void showPermissionDeniedMessage()
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("权限不足")
                 .setMessage("您没有执行此操作的权限。只有管理员可以执行此操作。")
@@ -413,15 +486,18 @@ public class MedicalManagementActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         loadMedicalRecords();
     }
     
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ADD_MEDICAL || requestCode == REQUEST_EDIT_MEDICAL) {
+        if (requestCode == REQUEST_ADD_MEDICAL || requestCode == REQUEST_EDIT_MEDICAL)
+        {
             // 无论添加还是编辑，都重新加载数据
             loadMedicalRecords();
         }

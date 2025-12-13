@@ -2,7 +2,6 @@ package com.example.cms_android.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +25,8 @@ import java.util.Locale;
 /**
  * 登录Activity
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity
+{
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
@@ -38,7 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferencesManager sharedPreferencesManager;
     
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         
@@ -53,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         setupClickListeners();
     }
     
-    private void initViews() {
+    private void initViews()
+    {
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
@@ -62,23 +64,27 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
     }
     
-    private void setupClickListeners() {
+    private void setupClickListeners()
+    {
         btnLogin.setOnClickListener(v -> attemptLogin());
         
-        tvRegister.setOnClickListener(v -> {
+        tvRegister.setOnClickListener(v ->
+        {
             // 跳转到注册页面
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
         
-        tvForgotPassword.setOnClickListener(v -> {
+        tvForgotPassword.setOnClickListener(v ->
+        {
             // 跳转到忘记密码页面
             Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
         });
     }
     
-    private void attemptLogin() {
+    private void attemptLogin()
+    {
         // 重置错误
         etUsername.setError(null);
         etPassword.setError(null);
@@ -91,7 +97,8 @@ public class LoginActivity extends AppCompatActivity {
         
         // 验证用户名格式
         String usernameError = ValidationUtils.getUsernameError(username);
-        if (usernameError != null) {
+        if (usernameError != null)
+        {
             etUsername.setError(usernameError);
             focusView = etUsername;
             cancel = true;
@@ -99,29 +106,38 @@ public class LoginActivity extends AppCompatActivity {
         
         // 验证密码格式
         String passwordError = ValidationUtils.getPasswordError(password);
-        if (passwordError != null) {
+        if (passwordError != null)
+        {
             etPassword.setError(passwordError);
-            if (focusView == null) {
+            if (focusView == null)
+            {
                 focusView = etPassword;
             }
             cancel = true;
         }
         
-        if (cancel) {
+        if (cancel)
+        {
             // 有错误，聚焦到第一个错误字段
             focusView.requestFocus();
-        } else {
+        }
+        else
+        {
             // 显示进度条，开始登录
             showProgress(true);
             performLogin(username, password);
         }
     }
     
-    private void performLogin(String username, String password) {
-        userRepository.login(username, password, new UserRepository.DataSourceCallback<User>() {
+    private void performLogin(String username, String password)
+    {
+        userRepository.login(username, password, new UserRepository.DataSourceCallback<User>()
+        {
             @Override
-            public void onSuccess(User user) {
-                runOnUiThread(() -> {
+            public void onSuccess(User user)
+            {
+                runOnUiThread(() ->
+                {
                     showProgress(false);
                     
                     // 更新最后登录时间
@@ -133,8 +149,10 @@ public class LoginActivity extends AppCompatActivity {
             }
             
             @Override
-            public void onError(String errorMessage) {
-                runOnUiThread(() -> {
+            public void onError(String errorMessage)
+            {
+                runOnUiThread(() ->
+                {
                     showProgress(false);
                     Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                 });
@@ -142,24 +160,29 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     
-    private void updateLastLoginTime(long userId) {
+    private void updateLastLoginTime(long userId)
+    {
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .format(new Date());
         
-        userRepository.updateLastLoginTime(userId, currentTime, new UserRepository.DataSourceCallback<Boolean>() {
+        userRepository.updateLastLoginTime(userId, currentTime, new UserRepository.DataSourceCallback<Boolean>()
+        {
             @Override
-            public void onSuccess(Boolean success) {
+            public void onSuccess(Boolean success)
+            {
                 // 登录时间更新成功
             }
             
             @Override
-            public void onError(String errorMessage) {
+            public void onError(String errorMessage)
+            {
                 // 更新失败，不影响主要登录流程
             }
         });
     }
     
-    private void loginSuccess(User user) {
+    private void loginSuccess(User user)
+    {
         // 保存登录状态到SharedPreferences
         sharedPreferencesManager.saveLoginInfo(user);
         
@@ -172,13 +195,17 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, "欢迎回来，" + user.getUsername() + "！", Toast.LENGTH_SHORT).show();
     }
     
-    private void showProgress(boolean show) {
-        if (show) {
+    private void showProgress(boolean show)
+    {
+        if (show)
+        {
             progressBar.setVisibility(View.VISIBLE);
             btnLogin.setEnabled(false);
             tvRegister.setEnabled(false);
             tvForgotPassword.setEnabled(false);
-        } else {
+        }
+        else
+        {
             progressBar.setVisibility(View.GONE);
             btnLogin.setEnabled(true);
             tvRegister.setEnabled(true);
@@ -187,7 +214,8 @@ public class LoginActivity extends AppCompatActivity {
     }
     
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         // 按返回键退出应用
         moveTaskToBack(true);
     }

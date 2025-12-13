@@ -17,10 +17,9 @@ import com.example.cms_android.model.User;
 import com.example.cms_android.utils.SharedPreferencesManager;
 import com.example.cms_android.utils.PermissionManager;
 
-public class HouseholdFormActivity extends AppCompatActivity {
-
-    private EditText etHouseholdNumber, etAddress, etHouseholderName, etHouseholderIdCard,
-            etPhoneNumber, etRegistrationDate, etHouseholdType, etPopulationCount, etNotes;
+public class HouseholdFormActivity extends AppCompatActivity
+{
+    private EditText etHouseholdNumber, etAddress, etHouseholderName, etHouseholderIdCard, etPhoneNumber, etRegistrationDate, etHouseholdType, etPopulationCount, etNotes;
     private Button btnSave, btnCancel;
     private HouseholdDao householdDao;
     private Household currentHousehold;
@@ -31,7 +30,8 @@ public class HouseholdFormActivity extends AppCompatActivity {
     private boolean isEditMode = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_household_form);
 
@@ -44,13 +44,15 @@ public class HouseholdFormActivity extends AppCompatActivity {
         
         // 检查是否是编辑模式
         long householdId = getIntent().getLongExtra("HOUSEHOLD_ID", -1);
-        if (householdId != -1) {
+        if (householdId != -1)
+        {
             isEditMode = true;
             loadHouseholdData(householdId);
         }
     }
 
-    private void initializeViews() {
+    private void initializeViews()
+    {
         etHouseholdNumber = findViewById(R.id.et_household_number);
         etAddress = findViewById(R.id.et_address);
         etHouseholderName = findViewById(R.id.et_householder_name);
@@ -64,41 +66,53 @@ public class HouseholdFormActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.btn_cancel);
     }
 
-    private void setupClickListeners() {
-        btnSave.setOnClickListener(new View.OnClickListener() {
+    private void setupClickListeners()
+    {
+        btnSave.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 saveHousehold();
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 finish();
             }
         });
         
         // 为工具栏的返回按钮设置监听器
         Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if (toolbar != null)
+        {
             toolbar.setNavigationOnClickListener(v -> finish());
         }
     }
 
-    private void loadHouseholdData(long householdId) {
-        new AsyncTask<Long, Void, Household>() {
+    private void loadHouseholdData(long householdId)
+    {
+        new AsyncTask<Long, Void, Household>()
+        {
             @Override
-            protected Household doInBackground(Long... ids) {
+            protected Household doInBackground(Long... ids)
+            {
                 return householdDao.getHouseholdById(ids[0]);
             }
 
             @Override
-            protected void onPostExecute(Household household) {
-                if (household != null) {
+            protected void onPostExecute(Household household)
+            {
+                if (household != null)
+                {
                     currentHousehold = household;
                     populateFormFields(household);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(HouseholdFormActivity.this, "加载户籍信息失败", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -106,7 +120,8 @@ public class HouseholdFormActivity extends AppCompatActivity {
         }.execute(householdId);
     }
 
-    private void populateFormFields(Household household) {
+    private void populateFormFields(Household household)
+    {
         etHouseholdNumber.setText(household.getHouseholdNumber());
         etAddress.setText(household.getAddress());
         etHouseholderName.setText(household.getHouseholderName());
@@ -118,7 +133,8 @@ public class HouseholdFormActivity extends AppCompatActivity {
         etNotes.setText(household.getNotes());
     }
 
-    private void saveHousehold() {
+    private void saveHousehold()
+    {
         String householdNumber = etHouseholdNumber.getText().toString().trim();
         String address = etAddress.getText().toString().trim();
         String householderName = etHouseholderName.getText().toString().trim();
@@ -132,22 +148,28 @@ public class HouseholdFormActivity extends AppCompatActivity {
         // 验证输入
         if (householdNumber.isEmpty() || address.isEmpty() || householderName.isEmpty() || 
             householderIdCard.isEmpty() || phoneNumber.isEmpty() || registrationDate.isEmpty() || 
-            householdType.isEmpty() || populationCountStr.isEmpty()) {
+            householdType.isEmpty() || populationCountStr.isEmpty())
+        {
             Toast.makeText(this, "请填写所有必填字段", Toast.LENGTH_SHORT).show();
             return;
         }
 
         int populationCount;
-        try {
+        try
+        {
             populationCount = Integer.parseInt(populationCountStr);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             Toast.makeText(this, "人口数量必须是数字", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (isEditMode && currentHousehold != null) {
+        if (isEditMode && currentHousehold != null)
+        {
             // 验证编辑权限
-            if (!PermissionManager.canModifyHousehold(currentUser, currentHousehold)) {
+            if (!PermissionManager.canModifyHousehold(currentUser, currentHousehold))
+            {
                 Toast.makeText(this, "您没有权限编辑此户籍信息", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -164,7 +186,9 @@ public class HouseholdFormActivity extends AppCompatActivity {
             currentHousehold.setNotes(notes);
 
             updateHousehold(currentHousehold);
-        } else {
+        }
+        else
+        {
             // 新增模式，创建新记录
             final Household household = new Household(householdNumber, address, householderName, 
                     householderIdCard, phoneNumber, registrationDate, householdType, populationCount, notes, currentUser.getId());
@@ -173,36 +197,46 @@ public class HouseholdFormActivity extends AppCompatActivity {
         }
     }
 
-    private void insertHousehold(final Household household) {
-        new AsyncTask<Void, Void, Long>() {
+    private void insertHousehold(final Household household)
+    {
+        new AsyncTask<Void, Void, Long>()
+        {
             @Override
             protected Long doInBackground(Void... voids) {
                 return householdDao.insert(household);
             }
 
             @Override
-            protected void onPostExecute(Long result) {
-                if (result > 0) {
+            protected void onPostExecute(Long result)
+            {
+                if (result > 0)
+                {
                     Toast.makeText(HouseholdFormActivity.this, "户籍添加成功", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
-                } else {
+                }
+                else
+                {
                     Toast.makeText(HouseholdFormActivity.this, "添加失败", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
     }
 
-    private void updateHousehold(final Household household) {
-        new AsyncTask<Void, Void, Integer>() {
+    private void updateHousehold(final Household household)
+    {
+        new AsyncTask<Void, Void, Integer>()
+        {
             @Override
-            protected Integer doInBackground(Void... voids) {
+            protected Integer doInBackground(Void... voids)
+            {
                 householdDao.update(household);
                 return 1; // 返回一个标识表示更新成功
             }
 
             @Override
-            protected void onPostExecute(Integer result) {
+            protected void onPostExecute(Integer result)
+            {
                 Toast.makeText(HouseholdFormActivity.this, "户籍信息更新成功", Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 finish();

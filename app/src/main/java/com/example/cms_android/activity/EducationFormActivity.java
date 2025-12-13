@@ -2,14 +2,11 @@ package com.example.cms_android.activity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -124,26 +121,28 @@ public class EducationFormActivity extends AppCompatActivity
 
     private void setupResidentSpinner()
     {
-        new Thread(() -> {
+        new Thread(() ->
+        {
             residentList = residentDao.getResidentsByOwner(currentUser.getId()); // 只获取当前用户的居民
-            runOnUiThread(() -> {
+            runOnUiThread(() ->
+            {
                 List<String> residentNames = new ArrayList<>();
-                for (com.example.cms_android.model.Resident resident : residentList) {
+                for (com.example.cms_android.model.Resident resident : residentList)
+                {
                     residentNames.add(resident.getName());
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                        this,
-                        android.R.layout.simple_spinner_item,
-                        residentNames
-                );
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, residentNames);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerResident.setAdapter(adapter);
                 
                 // 如果是编辑模式，设置选中项
-                if (isEditMode && education != null) {
-                    for (int i = 0; i < residentList.size(); i++) {
-                        if (residentList.get(i).getId() == education.getResidentId()) {
+                if (isEditMode && education != null)
+                {
+                    for (int i = 0; i < residentList.size(); i++)
+                    {
+                        if (residentList.get(i).getId() == education.getResidentId())
+                        {
                             spinnerResident.setSelection(i);
                             break;
                         }
@@ -157,7 +156,8 @@ public class EducationFormActivity extends AppCompatActivity
     {
         // 为工具栏的返回按钮设置监听器
         Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if (toolbar != null)
+        {
             toolbar.setNavigationOnClickListener(v -> finish());
         }
 
@@ -197,7 +197,6 @@ public class EducationFormActivity extends AppCompatActivity
         if (education != null)
         {
             // 设置居民选择（这里简化处理，实际应该根据residentId查找居民）
-            // spinnerResident.setSelection(...);
             
             etSchoolName.setText(education.getSchoolName());
             etEducationLevel.setText(education.getEducationLevel());
@@ -220,15 +219,21 @@ public class EducationFormActivity extends AppCompatActivity
             }
             
             // 正确设置居民ID
-            if (residentList != null && !residentList.isEmpty()) {
+            if (residentList != null && !residentList.isEmpty())
+            {
                 int selectedPosition = spinnerResident.getSelectedItemPosition();
-                if (selectedPosition >= 0 && selectedPosition < residentList.size()) {
+                if (selectedPosition >= 0 && selectedPosition < residentList.size())
+                {
                     long residentId = residentList.get(selectedPosition).getId();
                     record.setResidentId(residentId);
-                } else {
+                }
+                else
+                {
                     record.setResidentId(1); // 默认值
                 }
-            } else {
+            }
+            else
+            {
                 record.setResidentId(1); // 默认值
             }
             
@@ -240,7 +245,8 @@ public class EducationFormActivity extends AppCompatActivity
             record.setStatus(etStatus.getText().toString());
             record.setNotes(etNotes.getText().toString());
             // 设置ownerId为当前用户的ID
-            if (currentUser != null) {
+            if (currentUser != null)
+            {
                 record.setOwnerId(currentUser.getId());
             }
 
@@ -249,7 +255,8 @@ public class EducationFormActivity extends AppCompatActivity
                 if (isEditMode && education != null)
                 {
                     educationDao.update(record);
-                    runOnUiThread(() -> {
+                    runOnUiThread(() ->
+                    {
                         Toast.makeText(this, "教育记录更新成功", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
@@ -258,7 +265,8 @@ public class EducationFormActivity extends AppCompatActivity
                 else
                 {
                     educationDao.insert(record);
-                    runOnUiThread(() -> {
+                    runOnUiThread(() ->
+                    {
                         Toast.makeText(this, "教育记录创建成功", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();

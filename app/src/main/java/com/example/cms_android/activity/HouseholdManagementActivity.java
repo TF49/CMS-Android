@@ -29,12 +29,11 @@ import com.example.cms_android.model.User;
 import com.example.cms_android.adapter.HouseholdAdapter;
 import com.example.cms_android.utils.PermissionManager;
 import com.example.cms_android.utils.SharedPreferencesManager;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
 
-public class HouseholdManagementActivity extends AppCompatActivity {
-
+public class HouseholdManagementActivity extends AppCompatActivity
+{
     private RecyclerView recyclerView;
     private HouseholdAdapter adapter;
     private HouseholdDao householdDao;
@@ -53,7 +52,8 @@ public class HouseholdManagementActivity extends AppCompatActivity {
     private static final int REQUEST_EDIT_HOUSEHOLD = 1002;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_household_management);
 
@@ -67,7 +67,8 @@ public class HouseholdManagementActivity extends AppCompatActivity {
         loadHouseholds();
     }
 
-    private void initializeViews() {
+    private void initializeViews()
+    {
         recyclerView = findViewById(R.id.recycler_view);
         emptyState = findViewById(R.id.layout_empty);
         searchInput = findViewById(R.id.search_input);
@@ -83,70 +84,93 @@ public class HouseholdManagementActivity extends AppCompatActivity {
         setupSearchFunctionality();
     }
 
-    private void setupClickListeners() {
+    private void setupClickListeners()
+    {
         // 为工具栏的返回按钮设置监听器
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if (toolbar != null)
+        {
             toolbar.setNavigationOnClickListener(v -> finish());
         }
         
         // 为搜索栏添加按钮设置监听器
         com.google.android.material.button.MaterialButton btnAddSearch = findViewById(R.id.btn_add_search);
-        if (btnAddSearch != null) {
-            btnAddSearch.setOnClickListener(v -> {
-                if (PermissionManager.canAdd(currentUser)) {
+        if (btnAddSearch != null)
+        {
+            btnAddSearch.setOnClickListener(v ->
+            {
+                if (PermissionManager.canAdd(currentUser))
+                {
                     Intent intent = new Intent(HouseholdManagementActivity.this, HouseholdFormActivity.class);
                     startActivityForResult(intent, REQUEST_ADD_HOUSEHOLD);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(HouseholdManagementActivity.this, "权限不足，无法添加户籍信息", Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
         Button btnAddFirst = findViewById(R.id.btn_add_first);
-        btnAddFirst.setOnClickListener(new View.OnClickListener() {
+        btnAddFirst.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                if (PermissionManager.canAdd(currentUser)) {
+            public void onClick(View v)
+            {
+                if (PermissionManager.canAdd(currentUser))
+                {
                     Intent intent = new Intent(HouseholdManagementActivity.this, HouseholdFormActivity.class);
                     startActivityForResult(intent, REQUEST_ADD_HOUSEHOLD);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(HouseholdManagementActivity.this, "权限不足，无法添加户籍信息", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         // 设置适配器的点击监听器
-        adapter.setOnHouseholdClickListener(new HouseholdAdapter.OnHouseholdClickListener() {
+        adapter.setOnHouseholdClickListener(new HouseholdAdapter.OnHouseholdClickListener()
+        {
             @Override
-            public void onItemClick(Household household) {
+            public void onItemClick(Household household)
+            {
                 // 查看户籍详细信息
                 showHouseholdDetails(household);
             }
 
             @Override
-            public void onEditClick(Household household) {
+            public void onEditClick(Household household)
+            {
                 // 编辑户籍信息
-                if (PermissionManager.canModifyHousehold(currentUser, household)) {
+                if (PermissionManager.canModifyHousehold(currentUser, household))
+                {
                     editHousehold(household);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(HouseholdManagementActivity.this, "权限不足，无法编辑此户籍信息", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onDeleteClick(Household household) {
+            public void onDeleteClick(Household household)
+            {
                 // 删除户籍信息
-                if (PermissionManager.canRemoveHousehold(currentUser, household)) {
+                if (PermissionManager.canRemoveHousehold(currentUser, household))
+                {
                     deleteHousehold(household);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(HouseholdManagementActivity.this, "权限不足，无法删除此户籍信息", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void showHouseholdDetails(Household household) {
+    private void showHouseholdDetails(Household household)
+    {
         StringBuilder details = new StringBuilder();
         details.append("户籍编号: ").append(household.getHouseholdNumber()).append("\n\n");
         details.append("地址: ").append(household.getAddress()).append("\n\n");
@@ -163,31 +187,40 @@ public class HouseholdManagementActivity extends AppCompatActivity {
                 .setMessage(details.toString())
                 .setPositiveButton("确定", null)
                 .setNeutralButton(PermissionManager.canModifyHousehold(currentUser, household) ? "编辑" : null, (dialog, which) -> {
-                    if (PermissionManager.canModifyHousehold(currentUser, household)) {
+                    if (PermissionManager.canModifyHousehold(currentUser, household))
+                    {
                         editHousehold(household);
-                    } else {
+                    }
+                    else
+                    {
                         Toast.makeText(HouseholdManagementActivity.this, "权限不足，无法编辑此户籍信息", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .show();
     }
 
-    private void editHousehold(Household household) {
+    private void editHousehold(Household household)
+    {
         Intent intent = new Intent(HouseholdManagementActivity.this, HouseholdFormActivity.class);
         intent.putExtra("HOUSEHOLD_ID", household.getId());
         startActivityForResult(intent, REQUEST_EDIT_HOUSEHOLD);
     }
 
-    private void deleteHousehold(Household household) {
+    private void deleteHousehold(Household household)
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("确认删除")
                 .setMessage("确定要删除户籍编号为 " + household.getHouseholdNumber() + " 的户籍信息吗？")
-                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                .setPositiveButton("删除", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new AsyncTask<Household, Void, Void>() {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        new AsyncTask<Household, Void, Void>()
+                        {
                             @Override
-                            protected Void doInBackground(Household... households) {
+                            protected Void doInBackground(Household... households)
+                            {
                                 householdDao.delete(households[0]);
                                 return null;
                             }
@@ -203,20 +236,27 @@ public class HouseholdManagementActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void loadHouseholds() {
-        new AsyncTask<Void, Void, List<Household>>() {
+    private void loadHouseholds()
+    {
+        new AsyncTask<Void, Void, List<Household>>()
+        {
             @Override
-            protected List<Household> doInBackground(Void... voids) {
+            protected List<Household> doInBackground(Void... voids)
+            {
                 // 根据用户权限加载不同数据
-                if (PermissionManager.isAdmin(currentUser)) {
+                if (PermissionManager.isAdmin(currentUser))
+                {
                     return householdDao.getAllHouseholds(); // 管理员查看所有数据
-                } else {
+                }
+                else
+                {
                     return householdDao.getHouseholdsByOwner(currentUser.getId()); // 普通用户只能查看自己的数据
                 }
             }
 
             @Override
-            protected void onPostExecute(List<Household> households) {
+            protected void onPostExecute(List<Household> households)
+            {
                 allHouseholds = households;
                 // 初始时显示所有数据
                 filterHouseholds("");
@@ -224,42 +264,52 @@ public class HouseholdManagementActivity extends AppCompatActivity {
         }.execute();
     }
     
-    private void setupSearchFunctionality() {
+    private void setupSearchFunctionality()
+    {
         // 初始化搜索字段选择
         searchFieldSpinner = findViewById(R.id.spinner_search_field);
-        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 selectedSearchField = parent.getItemAtPosition(position).toString();
                 // 当选择字段变化时，重新过滤
                 filterHouseholds(searchInput.getText().toString());
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
                 selectedSearchField = "all";
             }
         });
         
         // 监听搜索输入框的文本变化
-        searchInput.addTextChangedListener(new TextWatcher() {
+        searchInput.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
                 filterHouseholds(s.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s)
+            {
             }
         });
 
         // 监听软键盘搜索按钮
-        searchInput.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        searchInput.setOnEditorActionListener((v, actionId, event) ->
+        {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH)
+            {
                 filterHouseholds(searchInput.getText().toString());
                 return true;
             }
@@ -270,19 +320,25 @@ public class HouseholdManagementActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(v -> filterHouseholds(searchInput.getText().toString()));
     }
     
-    private void filterHouseholds(String query) {
+    private void filterHouseholds(String query)
+    {
         if (allHouseholds == null) return;
 
         filteredHouseholds = new ArrayList<>();
         
-        if (query.isEmpty()) {
+        if (query.isEmpty())
+        {
             filteredHouseholds.addAll(allHouseholds);
-        } else {
+        }
+        else
+        {
             String lowerCaseQuery = query.toLowerCase();
-            for (Household household : allHouseholds) {
+            for (Household household : allHouseholds)
+            {
                 boolean match = false;
-                
-                switch (selectedSearchField) {
+
+                switch (selectedSearchField)
+                {
                     case "户籍编号":
                         match = household.getHouseholdNumber().toLowerCase().contains(lowerCaseQuery);
                         break;
@@ -301,7 +357,8 @@ public class HouseholdManagementActivity extends AppCompatActivity {
                         break;
                 }
                 
-                if (match) {
+                if (match)
+                {
                     filteredHouseholds.add(household);
                 }
             }
@@ -310,11 +367,15 @@ public class HouseholdManagementActivity extends AppCompatActivity {
         updateUI();
     }
     
-    private void updateUI() {
-        if (filteredHouseholds.isEmpty()) {
+    private void updateUI()
+    {
+        if (filteredHouseholds.isEmpty())
+        {
             emptyState.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        } else {
+        }
+        else
+        {
             emptyState.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             adapter.setHouseholds(filteredHouseholds);
@@ -322,15 +383,18 @@ public class HouseholdManagementActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         loadHouseholds();
     }
     
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ADD_HOUSEHOLD || requestCode == REQUEST_EDIT_HOUSEHOLD) {
+        if (requestCode == REQUEST_ADD_HOUSEHOLD || requestCode == REQUEST_EDIT_HOUSEHOLD)
+        {
             // 无论添加还是编辑，都重新加载数据
             loadHouseholds();
         }

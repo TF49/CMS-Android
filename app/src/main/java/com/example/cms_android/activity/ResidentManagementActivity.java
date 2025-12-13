@@ -1,6 +1,5 @@
 package com.example.cms_android.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,13 +30,12 @@ import com.example.cms_android.utils.PermissionManager;
 import com.example.cms_android.utils.SharedPreferencesManager;
 import com.example.cms_android.repository.ResidentRepository;
 import com.example.cms_android.repository.ResidentRepositoryImpl;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResidentManagementActivity extends AppCompatActivity {
-
+public class ResidentManagementActivity extends AppCompatActivity
+{
     private RecyclerView recyclerView;
     private CardView emptyState;
     private ResidentDao residentDao;
@@ -58,7 +56,8 @@ public class ResidentManagementActivity extends AppCompatActivity {
     private static final int REQUEST_EDIT_RESIDENT = 1002;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resident_management);
 
@@ -75,7 +74,8 @@ public class ResidentManagementActivity extends AppCompatActivity {
         loadResidents();
     }
 
-    private void initializeViews() {
+    private void initializeViews()
+    {
         recyclerView = findViewById(R.id.recycler_view);
         emptyState = findViewById(R.id.layout_empty);
         searchInput = findViewById(R.id.search_input);
@@ -91,69 +91,91 @@ public class ResidentManagementActivity extends AppCompatActivity {
         setupSearchFunctionality();
         
         // 设置适配器的点击监听器
-        adapter.setOnItemClickListener(new ResidentAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new ResidentAdapter.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(Resident resident) {
+            public void onItemClick(Resident resident)
+            {
                 // 查看居民详细信息
                 showResidentDetails(resident);
             }
 
             @Override
-            public void onEditClick(Resident resident) {
-                if (PermissionManager.canModifyResident(currentUser, resident)) {
+            public void onEditClick(Resident resident)
+            {
+                if (PermissionManager.canModifyResident(currentUser, resident))
+                {
                     editResident(resident);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(ResidentManagementActivity.this, "权限不足，无法编辑居民信息", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onDeleteClick(Resident resident) {
-                if (PermissionManager.canRemoveResident(currentUser, resident)) {
+            public void onDeleteClick(Resident resident)
+            {
+                if (PermissionManager.canRemoveResident(currentUser, resident))
+                {
                     deleteResident(resident);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(ResidentManagementActivity.this, "权限不足，无法删除居民信息", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void setupSearchFunctionality() {
+    private void setupSearchFunctionality()
+    {
         // 初始化搜索字段选择
         searchFieldSpinner = findViewById(R.id.spinner_search_field);
-        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        searchFieldSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 selectedSearchField = parent.getItemAtPosition(position).toString();
                 // 当选择字段变化时，重新过滤
                 filterResidents(searchInput.getText().toString());
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
                 selectedSearchField = "all";
             }
         });
         
         // 监听搜索输入框的文本变化
-        searchInput.addTextChangedListener(new TextWatcher() {
+        searchInput.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
                 filterResidents(s.toString());
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s)
+            {
+
             }
         });
 
         // 监听软键盘搜索按钮
-        searchInput.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        searchInput.setOnEditorActionListener((v, actionId, event) ->
+        {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH)
+            {
                 filterResidents(searchInput.getText().toString());
                 return true;
             }
@@ -164,19 +186,25 @@ public class ResidentManagementActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(v -> filterResidents(searchInput.getText().toString()));
     }
     
-    private void filterResidents(String query) {
+    private void filterResidents(String query)
+    {
         if (allResidents == null) return;
 
         filteredResidents = new ArrayList<>();
         
-        if (query.isEmpty()) {
+        if (query.isEmpty())
+        {
             filteredResidents.addAll(allResidents);
-        } else {
+        }
+        else
+        {
             String lowerCaseQuery = query.toLowerCase();
-            for (Resident resident : allResidents) {
+            for (Resident resident : allResidents)
+            {
                 boolean match = false;
                 
-                switch (selectedSearchField) {
+                switch (selectedSearchField)
+                {
                     case "姓名":
                         match = resident.getName().toLowerCase().contains(lowerCaseQuery);
                         break;
@@ -195,7 +223,8 @@ public class ResidentManagementActivity extends AppCompatActivity {
                         break;
                 }
                 
-                if (match) {
+                if (match)
+                {
                     filteredResidents.add(resident);
                 }
             }
@@ -204,73 +233,97 @@ public class ResidentManagementActivity extends AppCompatActivity {
         updateUI();
     }
 
-    private void updateUI() {
-        if (filteredResidents.isEmpty()) {
+    private void updateUI()
+    {
+        if (filteredResidents.isEmpty())
+        {
             emptyState.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        } else {
+        }
+        else
+        {
             emptyState.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             adapter.setResidents(filteredResidents);
         }
     }
 
-    private void setupClickListeners() {
+    private void setupClickListeners()
+    {
         // 为工具栏的返回按钮设置监听器
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if (toolbar != null)
+        {
             toolbar.setNavigationOnClickListener(v -> finish());
         }
         
         // 为搜索栏添加按钮设置监听器
         com.google.android.material.button.MaterialButton btnAddSearch = findViewById(R.id.btn_add_search);
-        if (btnAddSearch != null) {
-            btnAddSearch.setOnClickListener(v -> {
-                if (PermissionManager.canAdd(currentUser)) {
+        if (btnAddSearch != null)
+        {
+            btnAddSearch.setOnClickListener(v ->
+            {
+                if (PermissionManager.canAdd(currentUser))
+                {
                     Intent intent = new Intent(ResidentManagementActivity.this, ResidentFormActivity.class);
                     startActivityForResult(intent, REQUEST_ADD_RESIDENT);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(ResidentManagementActivity.this, "权限不足，只有管理员可以添加居民信息", Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
         Button btnAddFirst = findViewById(R.id.btn_add_first);
-        btnAddFirst.setOnClickListener(new View.OnClickListener() {
+        btnAddFirst.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                if (PermissionManager.canAdd(currentUser)) {
+            public void onClick(View v)
+            {
+                if (PermissionManager.canAdd(currentUser))
+                {
                     Intent intent = new Intent(ResidentManagementActivity.this, ResidentFormActivity.class);
                     startActivityForResult(intent, REQUEST_ADD_RESIDENT);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(ResidentManagementActivity.this, "权限不足，只有管理员可以添加居民信息", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void loadResidents() {
+    private void loadResidents()
+    {
         // 使用Repository加载居民数据
-        residentRepository.getResidentsByCurrentUser(currentUser, new ResidentRepository.DataSourceCallback() {
+        residentRepository.getResidentsByCurrentUser(currentUser, new ResidentRepository.DataSourceCallback()
+        {
             @Override
-            public void onSuccess(Object result) {
+            public void onSuccess(Object result)
+            {
                 allResidents = (List<Resident>) result;
                 filteredResidents = new ArrayList<>(allResidents);
                 runOnUiThread(() -> updateUI());
             }
 
             @Override
-            public void onError(String errorMessage) {
-                runOnUiThread(() -> {
+            public void onError(String errorMessage)
+            {
+                runOnUiThread(() ->
+                {
                     Toast.makeText(ResidentManagementActivity.this, "加载居民数据失败: " + errorMessage, Toast.LENGTH_SHORT).show();
                 });
             }
         });
     }
 
-    private void showResidentDetails(Resident resident) {
-        new Thread(() -> {
-            try {
+    private void showResidentDetails(Resident resident)
+    {
+        new Thread(() ->
+        {
+            try
+            {
                 Household household = householdDao.getHouseholdById(resident.getHouseholdId());
                 StringBuilder details = new StringBuilder();
                 details.append("姓名: ").append(resident.getName()).append("\n");
@@ -281,48 +334,63 @@ public class ResidentManagementActivity extends AppCompatActivity {
                 details.append("所属户籍: ").append(household != null ? household.getAddress() : "未知").append("\n");
                 details.append("备注: ").append(resident.getNotes());
 
-                runOnUiThread(() -> {
+                runOnUiThread(() ->
+                {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("居民详细信息")
                             .setMessage(details.toString())
                             .setPositiveButton("确定", null)
                             .setNeutralButton(PermissionManager.canModifyResident(currentUser, resident) ? "编辑" : null, (dialog, which) -> {
-                                if (PermissionManager.canModifyResident(currentUser, resident)) {
+                                if (PermissionManager.canModifyResident(currentUser, resident))
+                                {
                                     editResident(resident);
-                                } else {
+                                }
+                                else
+                                {
                                     Toast.makeText(ResidentManagementActivity.this, "权限不足，无法编辑居民信息", Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .show();
                 });
-            } catch (Exception e) {
-                runOnUiThread(() -> {
+            }
+            catch (Exception e)
+            {
+                runOnUiThread(() ->
+                {
                     Toast.makeText(this, "获取居民详情失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             }
         }).start();
     }
 
-    private void editResident(Resident resident) {
+    private void editResident(Resident resident)
+    {
         Intent intent = new Intent(ResidentManagementActivity.this, ResidentFormActivity.class);
         intent.putExtra("resident_id", resident.getId());
         startActivityForResult(intent, REQUEST_EDIT_RESIDENT);
     }
 
-    private void deleteResident(Resident resident) {
+    private void deleteResident(Resident resident)
+    {
         new AlertDialog.Builder(this)
                 .setTitle("确认删除")
                 .setMessage("确定要删除居民 \"" + resident.getName() + "\" 吗？此操作不可撤销。")
                 .setPositiveButton("删除", (dialog, which) -> {
-                    new Thread(() -> {
-                        try {
+                    new Thread(() ->
+                    {
+                        try
+                        {
                             residentDao.delete(resident);
-                            runOnUiThread(() -> {
+                            runOnUiThread(() ->
+                            {
                                 Toast.makeText(this, "居民信息删除成功", Toast.LENGTH_SHORT).show();
                                 loadResidents(); // 重新加载数据
                             });
-                        } catch (Exception e) {
-                            runOnUiThread(() -> {
+                        }
+                        catch (Exception e)
+                        {
+                            runOnUiThread(() ->
+                            {
                                 Toast.makeText(this, "删除居民信息失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
                         }
@@ -333,18 +401,22 @@ public class ResidentManagementActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK)
+        {
             loadResidents(); // 重新加载数据
         }
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         // 关闭Repository资源
-        if (residentRepository instanceof ResidentRepositoryImpl) {
+        if (residentRepository instanceof ResidentRepositoryImpl)
+        {
             ((ResidentRepositoryImpl) residentRepository).shutdown();
         }
     }
