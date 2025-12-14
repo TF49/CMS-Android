@@ -6,7 +6,8 @@ import com.example.cms_android.model.Household;
 import java.util.List;
 
 @Dao
-public interface HouseholdDao {
+public interface HouseholdDao
+{
     @Insert
     long insert(Household household);
 

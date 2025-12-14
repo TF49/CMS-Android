@@ -2,14 +2,13 @@ package com.example.cms_android.repository;
 
 import com.example.cms_android.model.Medical;
 
-import java.util.List;
 
 /**
  * 医疗管理Repository接口
  * 基于SQLite Room数据库的数据访问接口
  */
-public interface MedicalRepository extends PermissionChecker {
-    
+public interface MedicalRepository extends PermissionChecker
+{
     /**
      * 插入医疗信息
      */
@@ -48,7 +47,8 @@ public interface MedicalRepository extends PermissionChecker {
     /**
      * 数据源操作回调接口
      */
-    interface DataSourceCallback {
+    interface DataSourceCallback
+    {
         void onSuccess(Object result);
         void onError(String errorMessage);
     }

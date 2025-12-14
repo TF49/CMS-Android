@@ -16,7 +16,8 @@ import androidx.room.PrimaryKey;
         ),
         indices = {@Index("residentId")} // 添加这一行以创建索引
 )
-public class Education {
+public class Education
+{
     @PrimaryKey(autoGenerate = true)
     private long id;
     private long residentId; // 居民ID
@@ -37,9 +38,8 @@ public class Education {
 
     // 用于创建对象的全参构造函数
     @Ignore
-    public Education(long residentId, String educationLevel, String schoolName,
-                     String major, String enrollmentDate, String graduationDate,
-                     String degree, String status, boolean isCurrent, String notes, long ownerId) {
+    public Education(long residentId, String educationLevel, String schoolName, String major, String enrollmentDate, String graduationDate, String degree, String status, boolean isCurrent, String notes, long ownerId)
+    {
         this.residentId = residentId;
         this.educationLevel = educationLevel;
         this.schoolName = schoolName;

@@ -29,7 +29,7 @@ import com.example.cms_android.model.User;
 import com.example.cms_android.utils.PermissionManager;
 import com.example.cms_android.utils.SharedPreferencesManager;
 import com.example.cms_android.repository.ResidentRepository;
-import com.example.cms_android.repository.ResidentRepositoryImpl;
+import com.example.cms_android.repository.impl.ResidentRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;

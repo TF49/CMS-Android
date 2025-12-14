@@ -6,7 +6,8 @@ import com.example.cms_android.model.Medical;
 import java.util.List;
 
 @Dao
-public interface MedicalDao {
+public interface MedicalDao
+{
     @Insert
     long insert(Medical medical);
 

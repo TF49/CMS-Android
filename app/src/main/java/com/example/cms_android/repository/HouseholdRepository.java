@@ -2,14 +2,13 @@ package com.example.cms_android.repository;
 
 import com.example.cms_android.model.Household;
 
-import java.util.List;
 
 /**
  * 户籍管理Repository接口
  * 基于SQLite Room数据库的数据访问接口
  */
-public interface HouseholdRepository extends PermissionChecker {
-    
+public interface HouseholdRepository extends PermissionChecker
+{
     /**
      * 插入户籍信息
      */
@@ -48,7 +47,8 @@ public interface HouseholdRepository extends PermissionChecker {
     /**
      * 数据源操作回调接口
      */
-    interface DataSourceCallback {
+    interface DataSourceCallback
+    {
         void onSuccess(Object result);
         void onError(String errorMessage);
     }

@@ -16,7 +16,8 @@ import androidx.room.PrimaryKey;
         ),
         indices = @Index(value = {"residentId"}) // 添加索引以优化外键查询性能
 )
-public class Medical {
+public class Medical
+{
     @PrimaryKey(autoGenerate = true)
     private long id;
     private long residentId; // 居民ID
@@ -42,11 +43,8 @@ public class Medical {
     public Medical() {}
 
     @Ignore
-    public Medical(long residentId, String bloodType, String allergies, 
-                  String chronicDiseases, String surgeries, String medications, 
-                  String insuranceType, String insuranceNumber, String lastCheckupDate, String notes,
-                  String hospital, String department, String diagnosis, String treatment,
-                  String doctor, double cost, double insurance, long ownerId) {
+    public Medical(long residentId, String bloodType, String allergies, String chronicDiseases, String surgeries, String medications, String insuranceType, String insuranceNumber, String lastCheckupDate, String notes, String hospital, String department, String diagnosis, String treatment, String doctor, double cost, double insurance, long ownerId)
+    {
         this.residentId = residentId;
         this.bloodType = bloodType;
         this.allergies = allergies;

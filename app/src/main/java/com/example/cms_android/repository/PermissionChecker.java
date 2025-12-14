@@ -5,8 +5,8 @@ import com.example.cms_android.model.User;
 /**
  * 权限检查接口
  */
-public interface PermissionChecker {
-    
+public interface PermissionChecker
+{
     /**
      * 检查用户是否有权限添加数据
      */

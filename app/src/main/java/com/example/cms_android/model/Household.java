@@ -22,9 +22,8 @@ public class Household {
     public Household() {}
 
     @Ignore
-    public Household(String householdNumber, String address, String householderName, 
-                    String householderIdCard, String phoneNumber, String registrationDate, 
-                    String householdType, int populationCount, String notes, long ownerId) {
+    public Household(String householdNumber, String address, String householderName, String householderIdCard, String phoneNumber, String registrationDate, String householdType, int populationCount, String notes, long ownerId)
+    {
         this.householdNumber = householdNumber;
         this.address = address;
         this.householderName = householderName;

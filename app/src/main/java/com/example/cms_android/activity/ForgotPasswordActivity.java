@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cms_android.R;
 import com.example.cms_android.repository.UserRepository;
-import com.example.cms_android.repository.UserRepositoryImpl;
+import com.example.cms_android.repository.impl.UserRepositoryImpl;
 import com.example.cms_android.utils.ValidationUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;

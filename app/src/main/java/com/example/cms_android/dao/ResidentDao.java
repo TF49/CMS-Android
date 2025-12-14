@@ -6,7 +6,8 @@ import com.example.cms_android.model.Resident;
 import java.util.List;
 
 @Dao
-public interface ResidentDao {
+public interface ResidentDao
+{
     @Insert
     long insert(Resident resident);
 

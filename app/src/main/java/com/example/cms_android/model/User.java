@@ -5,7 +5,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
-public class User {
+public class User
+{
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String username;
@@ -22,7 +23,8 @@ public class User {
     }
 
     @Ignore
-    public User(String username, String password, String email, String role, String phone) {
+    public User(String username, String password, String email, String role, String phone)
+    {
         this.username = username;
         this.password = password;
         this.email = email;

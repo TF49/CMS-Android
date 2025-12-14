@@ -6,7 +6,8 @@ import com.example.cms_android.model.Education;
 import java.util.List;
 
 @Dao
-public interface EducationDao {
+public interface EducationDao
+{
     @Insert
     long insert(Education education);
 

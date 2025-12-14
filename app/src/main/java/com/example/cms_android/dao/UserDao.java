@@ -6,7 +6,8 @@ import com.example.cms_android.model.User;
 import java.util.List;
 
 @Dao
-public interface UserDao {
+public interface UserDao
+{
     @Insert
     long insert(User user);
 

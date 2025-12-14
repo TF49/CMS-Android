@@ -5,12 +5,14 @@ import com.example.cms_android.model.User;
 /**
  * 用户管理Repository接口
  */
-public interface UserRepository {
+public interface UserRepository
+{
     
     /**
      * 数据源回调接口
      */
-    interface DataSourceCallback<T> {
+    interface DataSourceCallback<T>
+    {
         void onSuccess(T data);
         void onError(String errorMessage);
     }

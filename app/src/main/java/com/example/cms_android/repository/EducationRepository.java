@@ -2,13 +2,13 @@ package com.example.cms_android.repository;
 
 import com.example.cms_android.model.Education;
 
-import java.util.List;
 
 /**
  * 教育管理Repository接口
  * 基于SQLite Room数据库的数据访问接口
  */
-public interface EducationRepository extends PermissionChecker {
+public interface EducationRepository extends PermissionChecker
+{
     
     /**
      * 插入教育信息
@@ -48,7 +48,8 @@ public interface EducationRepository extends PermissionChecker {
     /**
      * 数据源操作回调接口
      */
-    interface DataSourceCallback {
+    interface DataSourceCallback
+    {
         void onSuccess(Object result);
         void onError(String errorMessage);
     }

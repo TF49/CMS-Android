@@ -16,7 +16,8 @@ import androidx.room.PrimaryKey;
         ),
         indices = @Index(value = {"householdId"}) // 添加索引
 )
-public class Resident {
+public class Resident
+{
     @PrimaryKey(autoGenerate = true)
     private long id;
     private long householdId; // 所属户籍ID
@@ -39,10 +40,8 @@ public class Resident {
     public Resident() {}
 
     @Ignore
-    public Resident(long householdId, String name, String idCard, String gender, 
-                   String birthDate, String relationship, String ethnicGroup, 
-                   String educationLevel, String occupation, String maritalStatus, 
-                   String phoneNumber, String healthStatus, String bloodType, boolean isHouseholder, String notes) {
+    public Resident(long householdId, String name, String idCard, String gender, String birthDate, String relationship, String ethnicGroup, String educationLevel, String occupation, String maritalStatus, String phoneNumber, String healthStatus, String bloodType, boolean isHouseholder, String notes)
+    {
         this.householdId = householdId;
         this.name = name;
         this.idCard = idCard;

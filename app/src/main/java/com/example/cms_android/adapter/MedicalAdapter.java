@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cms_android.R;
 import com.example.cms_android.model.Medical;
-import com.example.cms_android.utils.PermissionManager;
 import com.example.cms_android.model.User;
 
 import java.util.ArrayList;
@@ -28,29 +27,35 @@ public class MedicalAdapter extends RecyclerView.Adapter<MedicalAdapter.MedicalV
 
     public MedicalAdapter()
     {
+
     }
 
     @NonNull
     @Override
-    public MedicalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MedicalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_medical_record, parent, false);
         return new MedicalViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MedicalViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MedicalViewHolder holder, int position)
+    {
         Medical medical = medicals.get(position);
         holder.bind(medical, listener, residentNames.get(medical.getResidentId()));
         
         // 根据用户权限控制按钮可见性
-        if (currentUser != null) {
+        if (currentUser != null)
+        {
             // 编辑按钮对所有登录用户可见
             holder.btnEdit.setVisibility(View.VISIBLE);
             
             // 删除按钮对所有登录用户可见
             holder.btnDelete.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else
+        {
             // 如果没有用户信息，默认隐藏所有操作按钮
             holder.btnEdit.setVisibility(View.GONE);
             holder.btnDelete.setVisibility(View.GONE);
@@ -58,32 +63,38 @@ public class MedicalAdapter extends RecyclerView.Adapter<MedicalAdapter.MedicalV
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return medicals.size();
     }
 
-    public void updateData(List<Medical> medicals) {
+    public void updateData(List<Medical> medicals)
+    {
         this.medicals = medicals;
         notifyDataSetChanged();
     }
 
     // 更新居民姓名映射
-    public void updateResidentNames(Map<Long, String> residentNames) {
+    public void updateResidentNames(Map<Long, String> residentNames)
+    {
         this.residentNames = residentNames;
         notifyDataSetChanged();
     }
 
-    public void setOnMedicalClickListener(OnMedicalClickListener listener) {
+    public void setOnMedicalClickListener(OnMedicalClickListener listener)
+    {
         this.listener = listener;
     }
     
     // 添加设置当前用户的方法
-    public void setCurrentUser(User user) {
+    public void setCurrentUser(User user)
+    {
         this.currentUser = user;
         notifyDataSetChanged(); // 通知数据改变以刷新UI
     }
 
-    public static class MedicalViewHolder extends RecyclerView.ViewHolder {
+    public static class MedicalViewHolder extends RecyclerView.ViewHolder
+    {
         private TextView tvResidentName;
         private TextView tvVisitDate;
         private TextView tvHospital;
@@ -95,7 +106,8 @@ public class MedicalAdapter extends RecyclerView.Adapter<MedicalAdapter.MedicalV
         private Button btnEdit;
         private Button btnDelete;
 
-        public MedicalViewHolder(@NonNull View itemView) {
+        public MedicalViewHolder(@NonNull View itemView)
+        {
             super(itemView);
             tvResidentName = itemView.findViewById(R.id.tv_resident_name);
             tvVisitDate = itemView.findViewById(R.id.tv_visit_date);
@@ -109,11 +121,15 @@ public class MedicalAdapter extends RecyclerView.Adapter<MedicalAdapter.MedicalV
             btnDelete = itemView.findViewById(R.id.btn_delete);
         }
 
-        public void bind(Medical medical, OnMedicalClickListener listener, String residentName) {
+        public void bind(Medical medical, OnMedicalClickListener listener, String residentName)
+        {
             // 显示居民姓名或ID
-            if (residentName != null && !residentName.isEmpty()) {
+            if (residentName != null && !residentName.isEmpty())
+            {
                 tvResidentName.setText(residentName);
-            } else {
+            }
+            else
+            {
                 tvResidentName.setText("居民ID: " + medical.getResidentId());
             }
             
@@ -126,29 +142,36 @@ public class MedicalAdapter extends RecyclerView.Adapter<MedicalAdapter.MedicalV
             tvInsurance.setText("医保报销: " + medical.getInsurance() + "元");
 
             // 设置编辑按钮点击事件
-            btnEdit.setOnClickListener(v -> {
-                if (listener != null) {
+            btnEdit.setOnClickListener(v ->
+            {
+                if (listener != null)
+                {
                     listener.onEditClick(medical);
                 }
             });
 
             // 设置删除按钮点击事件
-            btnDelete.setOnClickListener(v -> {
-                if (listener != null) {
+            btnDelete.setOnClickListener(v ->
+            {
+                if (listener != null)
+                {
                     listener.onDeleteClick(medical);
                 }
             });
 
             // 设置整个项目的点击事件
-            itemView.setOnClickListener(v -> {
-                if (listener != null) {
+            itemView.setOnClickListener(v ->
+            {
+                if (listener != null)
+                {
                     listener.onItemClick(medical);
                 }
             });
         }
     }
 
-    public interface OnMedicalClickListener {
+    public interface OnMedicalClickListener
+    {
         void onItemClick(Medical medical);
         void onEditClick(Medical medical);
         void onDeleteClick(Medical medical);

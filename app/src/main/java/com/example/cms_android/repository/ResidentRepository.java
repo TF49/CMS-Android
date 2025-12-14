@@ -3,14 +3,13 @@ package com.example.cms_android.repository;
 import com.example.cms_android.model.Resident;
 import com.example.cms_android.model.User;
 
-import java.util.List;
 
 /**
  * 居民管理Repository接口
  * 基于SQLite Room数据库的数据访问接口
  */
-public interface ResidentRepository extends PermissionChecker {
-    
+public interface ResidentRepository extends PermissionChecker
+{
     /**
      * 插入居民信息
      */
@@ -59,7 +58,8 @@ public interface ResidentRepository extends PermissionChecker {
     /**
      * 数据源操作回调接口
      */
-    interface DataSourceCallback {
+    interface DataSourceCallback
+    {
         void onSuccess(Object result);
         void onError(String errorMessage);
     }
